@@ -1,7 +1,70 @@
 <!DOCTYPE html>
+<html>
 <head>
-  
+	<link rel='stylesheet' href='style.css'/>
+	<script src='script.js'></script>
 </head>
 <body>
-  Hello World
+    <h1>Carrot language compiler (Version: ^3)</h1>
+    <h4>Please note that this language is still under construction. The code for primality checking is taken from Vihan's TeaScript <a href="https://github.com/vihanb/TeaScript/blob/master/teascript.js">source code</a>.</h4>
+    <textarea id="t" placeholder="Code..."></textarea><br><br>
+    <textarea id="n" placeholder="Command-line arguments..."></textarea><br><br>
+    <button id="b" onClick="f()">Compile and Execute</button><br>
+    <p id="p"><i>Output...</i></p>
+    <h4>Carrot is an esoteric "programming language" made for code-golf created by PPCG user Kritixi Lithos. It was inspired by TeaScript, CJam and Pyth.</h4>
+    <h2>Cheatsheet:</h2>
+    <p>
+        This is how every program in Carrot looks like:<br>
+    </p>
+    <div class="code"><i>stack</i>^<i>commands</i></div>
+    
+    <p>The <i>stack</i> starts off as a String that can further be manipulated with the <i>commands</i>. The <i>stack</i> doesn't need to be enclosed in quotes. Another thing to note is the the <i>stack</i> is basically a String and <b>not</b> an array. Next up is the caret "^". This is required in every program as it seperates the <i>stack</i> from the <i>commands</i>. The <i>commands</i> manipulate the <i>stack</i>, to put it simply. At the termination of the program, the <i>stack</i>, after all the <i>commands</i> are applied, is printed to the output.</p>
+    <h3>Learn Via Examples</h3>
+    <p>
+        <div class="code">Hello, World!^</div>
+        This is a simple "Hello, World!" program. "Hello, World!" is pushed into the stack and is printed to the console.
+    </p>
+    <p>
+        <div class="code">as^+"df"</div>
+        This code prints "asdf" to the output. Here is how it works: first "as" is pushed onto the stack. Then it is concatenated (using the "+") with "df". Note how the stack doesn't require quotes but the commands do require them.
+    </p>
+    <p>
+        
+    </p>
+    <h3>List of Commands:</h3>
+    <ul>
+        <li>"+": contenation amongst strings and addition amongst integers</li>
+        <li>"-": substring|subtraction</li>
+        <li>"*": Multiplies stack by the succeeding number of times</li>
+        <li>"i": Converts stack into an integer</li>
+        <li>"#" and "$": </li>
+        <li>"P": primality checking</li>
+    </ul>
+    <br>
+    <h2>Revision History:</h2>
+    November 3rd, 2015 (Revision 3 - Version ^3)
+    <ul>
+        <li>Modified "^": made it optional to have the caret "^"</li>
+        <li>Added "()": will evaluate expression between parentheses</li>
+        <li>Modified "#" and "$": these variables can be used in the stack</li>
+        <li>Modified "P": Primality checkign can be used to check on strings too</li>
+    </ul>
+    November 2nd, 2015 (Revision 2 - Version ^2)
+    <ul>
+        <li>Added "#" and "$": the variables that represent the cammand-line arguments</li>
+        <li>Modified "+": when string is being added to stackInt, then it become stack instead.</li>
+        <li>Added "P": does primality testing</li>
+        <li>Added stackBool</li>
+    </ul>
+    November 1st, 2015 (Revision 1 - Version ^)
+    <ul>
+        <li>Created Carrot</li>
+        <li>Added "+": concatenation of strings|addition</li>
+        <li>Added "-": substring string|subtraction</li>
+        <li>Added "*": (string) multiplication</li>
+        <li>Added "i": convert stack into integer</li>
+    </ul>
+    <br>
+    <footer>Copyright &copy 2015 Kritixi Lithos</footer>
 </body>
+</html>
