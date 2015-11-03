@@ -10,13 +10,13 @@ function getQueryVariable(variable)
 }
 
 //window.onload = function() {
-  alert("on");
+  console.log("Started");
   var b = document.getElementById("b");
   var t = document.getElementById("t");
   var n = document.getElementById("n");
   
   t.textContent = getQueryVariable("code");
-  alert(getQueryVariable("code") +":"+ getQueryVariable("input"));
+  console.log(getQueryVariable("code") +":"+ getQueryVariable("input"));
   n.textContent = getQueryVariable("input");
 //};
 
