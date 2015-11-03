@@ -9,7 +9,7 @@ function getQueryVariable(variable)
   return(false);
 }
 
-window.onload = function() {
+//window.onload = function() {
   alert("on");
   var b = document.getElementById("b");
   var t = document.getElementById("t");
@@ -18,7 +18,7 @@ window.onload = function() {
   t.textContent = getQueryVariable("code");
   alert(getQueryVariable("code") +":"+ getQueryVariable("input"));
   n.textContent = getQueryVariable("input");
-};
+//};
 
 var f = function() {
   var t = document.getElementById("t");
