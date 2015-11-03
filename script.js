@@ -1,3 +1,15 @@
+window.onload = function() {
+  console.log("Started");
+  var b = document.getElementById("b");
+  var t = document.getElementById("t");
+  var n = document.getElementById("n");
+  
+  console.log(getQueryVariable("code") +":"+ getQueryVariable("input"));
+  
+  t.textContent = getQueryVariable("code");
+  n.textContent = getQueryVariable("input");
+};
+
 function getQueryVariable(variable)
 {
   var query = window.location.search.substring(1);
@@ -6,19 +18,8 @@ function getQueryVariable(variable)
     var pair = vars[i].split("=");
     if(pair[0] == variable){return pair[1];}
   }
-  return(false);
+  return("");
 }
-
-window.onload = function() {
-  console.log("Started");
-  var b = document.getElementById("b");
-  var t = document.getElementById("t");
-  var n = document.getElementById("n");
-  
-  t.textContent = getQueryVariable("code");
-  console.log(getQueryVariable("code") +":"+ getQueryVariable("input"));
-  n.textContent = getQueryVariable("input");
-};
 
 var f = function() {
   var t = document.getElementById("t");
