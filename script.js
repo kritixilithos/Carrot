@@ -1,4 +1,22 @@
-var b = document.getElementById("b");
+document.onload = function() {
+  var b = document.getElementById("b");
+  var t = document.getElementById("t");
+  var n = document.getElementById("n");
+  
+  t.textContent = getQueryVariable("code");
+  n.textContent = getQueryVariable("input");
+};
+
+function getQueryVariable(variable)
+{
+  var query = window.location.search.substring(1);
+  var vars = query.split("&");
+  for (var i=0;i<vars.length;i++) {
+    var pair = vars[i].split("=");
+    if(pair[0] == variable){return pair[1];}
+  }
+  return(false);
+}
 
 var f = function() {
   var t = document.getElementById("t");
