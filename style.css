@@ -1,0 +1,44 @@
+body {
+  margin: 5px;
+  padding: 5px;
+  background: green;
+  font-family: monospace;
+}
+
+a {
+  color: black;
+}
+
+textarea {
+  border-radius: 5px;
+  border: 3px solid;
+  padding: 2px;
+  color: green;
+  width: 100%;
+  font-family: monospace;
+}
+
+#b {
+    height: 21px;
+    border-radius: 5px;
+}
+
+#p {
+    border: 1px solid lightgreen;
+    padding: 5px;
+    background: gray;
+    height: 100px;
+    color: lightgreen;
+}
+
+.code {
+    background: #888;
+    padding: 5px;
+    white-space: pre;
+}
+
+footer {
+    background: black;
+    color: white;
+    padding: 5px;
+}
