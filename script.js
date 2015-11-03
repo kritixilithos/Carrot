@@ -9,7 +9,8 @@ function getQueryVariable(variable)
   return(false);
 }
 
-document.onload = function() {
+window.onload = function() {
+  alert("on");
   var b = document.getElementById("b");
   var t = document.getElementById("t");
   var n = document.getElementById("n");
