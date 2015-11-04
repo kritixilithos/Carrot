@@ -2,7 +2,7 @@ body {
   margin: 5px;
   padding: 5px;
   background: green;
-  font-family: monospace;
+  font-family: 'Inconsolata', ;
   color: lightgreen;
 }
 
@@ -13,10 +13,9 @@ a {
 textarea {
   border-radius: 5px;
   border: 3px solid;
-  padding: 2px;
-  color: lightgreen;
+  padding: 5px;
+  color: black;
   width: 100%;
-  font-family: monospace;
 }
 
 #b {
