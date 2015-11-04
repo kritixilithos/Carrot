@@ -2,7 +2,7 @@ body {
   margin: 5px;
   padding: 5px;
   background: green;
-  font-family: 'Inconsolata', ;
+  font-family: 'Inconsolata', monospace;
   color: lightgreen;
 }
 
@@ -15,6 +15,7 @@ textarea {
   border: 3px solid;
   padding: 5px;
   color: green;
+  font-family: 'Inconsolata', monospace;
   width: 100%;
 }
 
