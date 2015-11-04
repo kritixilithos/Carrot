@@ -1,8 +1,9 @@
 body {
   margin: 5px;
   padding: 5px;
-  background: lightgreen;
+  background: green;
   font-family: monospace;
+  color: lightgreen;
 }
 
 a {
