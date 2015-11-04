@@ -17,6 +17,7 @@ textarea {
   color: green;
   font-family: 'Inconsolata', monospace;
   width: 100%;
+  font-size: medium;
 }
 
 #b {
