@@ -31,6 +31,7 @@ textarea {
     background: gray;
     height: 100px;
     color: lightgreen;
+    font-size: 125%;
 }
 
 .code {
