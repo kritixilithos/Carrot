@@ -84,6 +84,9 @@ var Main = function(_input, _args) {
 
     ops = ops.replace(/\(([^\(\)]*)\)/g, evaluate);
 
+    ops=ops.replace(/1\?([^\:]*)\:([^\|]*)\|/g, "$1");
+    ops=ops.replace(/0\?([^\:]*)\:([^\|]*)\|/g, "$2");
+
     //checking if caret is missing
     try {
       console.log(ops.length);
