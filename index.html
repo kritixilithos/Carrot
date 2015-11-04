@@ -27,13 +27,17 @@
     <p>
         <div class="code">Hello, World!^</div>
         This is a simple "Hello, World!" program. "Hello, World!" is pushed into the stack and is printed to the console.
+        
+        A shorter version would be:
+        <div class="code">Hello, World!</div>
     </p>
     <p>
         <div class="code">as^+"df"</div>
         This code prints "asdf" to the output. Here is how it works: first "as" is pushed onto the stack. Then it is concatenated (using the "+") with "df". Note how the stack doesn't require quotes but the commands do require them.
     </p>
     <p>
-        
+        <div class="code">asdfghjkl^-3</div>
+        This code prints "asdfgh" to the output. Here is how it works: first "asdfghjkl" is pushed onto the stack. Then the "-" operator performs a substring to the string. Because the number after the "-" is 3, the length of the stack is reduced by 3 as such: "asdfghjkl" - "jkl" = "asdfgh".
     </p>
     <h3>List of Commands:</h3>
     <ul>
@@ -41,11 +45,16 @@
         <li>"-": substring|subtraction</li>
         <li>"*": Multiplies stack by the succeeding number of times</li>
         <li>"i": Converts stack into an integer</li>
-        <li>"#" and "$": </li>
+        <li>"#" and "$": The string/int values of the input respectively</li>
         <li>"P": primality checking</li>
+        <li>"?:|": if-else statements</li>
     </ul>
     <br>
     <h2>Revision History:</h2>
+    November 4th, 2015 (Revision 4 - Version ^4)
+    <ul>
+    	<li>Added "?:|": this is the if or else statement</li>
+    </ul>
     November 3rd, 2015 (Revision 3 - Version ^3)
     <ul>
         <li>Modified "^": made it optional to have the caret "^"</li>
