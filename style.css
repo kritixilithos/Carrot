@@ -3,7 +3,6 @@ body {
   padding: 5px;
   background: lightgreen;
   font-family: monospace;
-  color: #5F5;
 }
 
 a {
@@ -14,7 +13,7 @@ textarea {
   border-radius: 5px;
   border: 3px solid;
   padding: 2px;
-  /*color: #5F5;*/
+  color: lightgreen;
   width: 100%;
   font-family: monospace;
 }
