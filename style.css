@@ -1,20 +1,20 @@
 body {
   margin: 5px;
   padding: 5px;
-  background: green;
+  background: orange;
   font-family: 'Inconsolata', monospace;
-  color: lightgreen;
+  color: black;
 }
 
 a {
-  color: lightgreen;
+  color: black;
 }
 
 textarea {
   border-radius: 5px;
   border: 3px solid;
   padding: 5px;
-  color: green;
+  color: black;
   font-family: 'Inconsolata', monospace;
   width: 100%;
   font-size: 125%;
@@ -22,15 +22,17 @@ textarea {
 
 #b {
     height: 21px;
+    border: 2px solid;
+    background: white;
     border-radius: 5px;
 }
 
 #p {
-    border: 1px solid lightgreen;
+    border: 1px solid black;
     padding: 5px;
     background: gray;
     height: 100px;
-    color: lightgreen;
+    color: black;
     font-size: 125%;
 }
 
