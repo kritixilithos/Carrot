@@ -53,7 +53,7 @@ var Main = function(_input, _args) {
     if (stack.indexOf("$") != -1) {
       stack = stack.replace(/\$/g, parseInt(args));
     }
-    stack = stack.replace(/\(([^\(\)]*)\)/g, evaluate);
+    stack = stack.replace(/\(([^\(\)]*)\)/g, evaluate);//eval parenthesis
   } else {
     //Variables
     var input = _input.split(/\^/);
@@ -82,10 +82,10 @@ var Main = function(_input, _args) {
       stack = stack.replace(/\$/g, parseInt(args));
     }
 
-    ops = ops.replace(/\(([^\(\)]*)\)/g, evaluate);
+    ops = ops.replace(/\(([^\(\)]*)\)/g, evaluate);//eval parenthesis
 
-    ops=ops.replace(/1\?([^\:]*)\:([^\|]*)\|/g, "$1");
-    ops=ops.replace(/0\?([^\:]*)\:([^\|]*)\|/g, "$2");
+    ops=ops.replace(/1|true\?([^\:]*)\:([^\|]*)\|/g, "$1");//if statements
+    ops=ops.replace(/0|false\?([^\:]*)\:([^\|]*)\|/g, "$2");//else statements
 
     //checking if caret is missing
     try {
