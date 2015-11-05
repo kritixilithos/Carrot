@@ -134,7 +134,7 @@ var Main = function(_input, _args) {
               num = parseInt(match);
               stackInt /= num;
               if(stack.length > num+1) {
-                stack = stack.splice(0,num) + stack.splice(num+1);
+                stack = stack.slice(0,num) + stack.slice(num+1);
               }
           }
           break;
