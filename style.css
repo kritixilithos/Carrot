@@ -2,7 +2,7 @@ body {
   margin: 5px;
   padding: 5px;
   background: orange;
-  font-family: 'Inconsolata', monospace;
+  font-family: 'Roboto Mono', monospace;
   color: black;
 }
 
@@ -15,7 +15,7 @@ textarea {
   border: 3px solid;
   padding: 5px;
   color: black;
-  font-family: 'Inconsolata', monospace;
+  font-family: 'Roboto Mono', monospace;
   width: 100%;
   font-size: 125%;
 }
