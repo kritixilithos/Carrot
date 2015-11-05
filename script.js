@@ -118,6 +118,23 @@ var Main = function(_input, _args) {
           }
           typeMode = "bool";
           break;
+        case "/":
+          //Divide '/'
+          switch (nextChar) {
+            case "\"":
+              break
+            case "\'":
+              break;
+            default:
+              //number
+              var num = 0;
+              var matched = false;
+              var numRe = /\d+/;
+              var match = numRe.exec(ops.substring(i, ops.length));
+              num = parseInt(match);
+              stackInt /= num;
+          }
+          break;
         case "*":
           //Multiply '*'
           switch (nextChar) {
