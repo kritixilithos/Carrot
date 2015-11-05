@@ -133,7 +133,7 @@ var Main = function(_input, _args) {
               var match = numRe.exec(ops.substring(i, ops.length));
               num = parseInt(match);
               stackInt /= num;
-              if(stack.length > num+1) {
+              if(stack.length > num) {
                 stack = stack.slice(0,num) + stack.slice(num+1);
               }
           }
