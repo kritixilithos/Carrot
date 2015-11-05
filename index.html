@@ -40,6 +40,11 @@
         <div class="code">asdfghjkl^-3</div>
         This code prints "asdfgh" to the output. Here is how it works: first "asdfghjkl" is pushed onto the stack. Then the "-" operator performs a substring to the string. Because the number after the "-" is 3, the length of the stack is reduced by 3 as such: "asdfghjkl" - "jkl" = "asdfgh".
     </p>
+    
+    <p>
+    	<div class="code">as^*1</div>
+    	The code prints "asas" to the output. Here is how it works: first "as" is pushed onto the stack. Then comes the "*" operator. It multiples the string by n+1 times where "n" is the number after the "*". Therefore, the stack "as" is multiplied by 1+1=2 times like so: "as"+"as"="asas".
+    </p>
 
     <h3>List of Commands:</h3>
     <ul>
