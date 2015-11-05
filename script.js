@@ -84,8 +84,8 @@ var Main = function(_input, _args) {
 
     ops = ops.replace(/\(([^\(\)]*)\)/g, evaluate);//eval parenthesis
 
-    ops=ops.replace(/1|true\?([^\:]*)\:([^\|]*)\|/g, "$1");//if statements
-    ops=ops.replace(/0|false\?([^\:]*)\:([^\|]*)\|/g, "$2");//else statements
+    ops=ops.replace(/(1|true)\?([^\:]*)\:([^\|]*)\|/g, "$2");//if statements
+    ops=ops.replace(/(0|false)\?([^\:]*)\:([^\|]*)\|/g, "$3");//else statements
 
     //checking if caret is missing
     try {
