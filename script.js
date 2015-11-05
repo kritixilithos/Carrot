@@ -133,6 +133,9 @@ var Main = function(_input, _args) {
               var match = numRe.exec(ops.substring(i, ops.length));
               num = parseInt(match);
               stackInt /= num;
+              if(stack.length > num+1) {
+                stack = stack.splice(0,num) + stack.splice(num+1);
+              }
           }
           break;
         case "*":
