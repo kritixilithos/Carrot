@@ -190,7 +190,7 @@ var Main = function(_input, _args) {
           //Add '+'
           if (!(nextChar == "\"")) {
             //number
-            alert(ops[i+1]);
+            //alert(ops[i+1]);
             var num = 0;
             //TODO
             if(ops[i+1] === "@") {
