@@ -2,12 +2,12 @@
 <html>
 <head>
 	<link href='https://fonts.googleapis.com/css?family=Roboto+Mono' rel='stylesheet' type='text/css'>
-	<title>Carrot ^5 interpreter</title>
+	<title>Carrot ^6 interpreter</title>
 	<link rel='stylesheet' href='style.css'/>
 	<script src='script.js'></script>
 </head>
 <body>
-    <h1>Carrot language compiler (Version: ^5)</h1>
+    <h1>Carrot language compiler (Version: ^6)</h1>
     <h4>Please note that this language is still under construction. Source code for this website is at <a href="https://github.com/kritixilithos/Carrot/">GitHub</a>.</h4>
     <p><b>Code:</b></p>
     <textarea id="t" placeholder="Code..."></textarea><br><br>
@@ -46,6 +46,10 @@
     	<div class="code">as^*1</div>
     	The code prints "asas" to the output. Here is how it works: first "as" is pushed onto the stack. Then comes the "*" operator. It multiples the string by n+1 times where "n" is the number after the "*". Therefore, the stack "as" is multiplied by 1+1=2 times like so: "as"+"as"="asas".
     </p>
+    <p>
+        <div class="code">0123^/2</div>
+        The code prints "013" to the console. The "/" removes character at index 2(the number after the "/" sign).
+    </p>
 
     <h3>List of Commands:</h3>
     <ul>
@@ -57,9 +61,14 @@
         <li>"#" and "$": The string/int values of the input respectively</li>
         <li>"P": primality checking</li>
         <li>"?:|": if-else statements</li>
+        <li>"[]": repeat loop</li>
     </ul>
     <br>
     <h2>Revision History:</h2>
+    November 8th, 2015 (Revision 6 - Version ^6)
+    <ul>
+        <li>Added "[]": Repeat loop</li>
+    </ul>
     November 5th, 2015 (Revision 5 - Version ^5)
     <ul>
     	<li>Modified "?:|": the if/else statement can except true/false instead of 0s and 1s</li>
