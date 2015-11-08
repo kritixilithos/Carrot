@@ -97,6 +97,7 @@ var Main = function(_input, _args) {
     //Iterating through the operators.
     for (var i = 0; i < ops.length; i++) {
       var op = ops[i];
+      //ops=ops.replace(/\[(\d+)[^\]]*\]/, function($0, $1){return $0.replace(/@/g, $1);});
       try {
         var nextChar = ops[i + 1];
       } catch (e) {
@@ -104,6 +105,15 @@ var Main = function(_input, _args) {
       }
       //console.log(nextChar);
       switch (op) {
+        case "]"://repeat statement
+          var numRe = /\[(\d+)/;
+          var numLoops = numRe.exec(ops.substring(0, i));
+          var loops = numLoops[1];
+          if(parseInt(loops)>1) {
+            ops = ops.replace(/\[\d+/g, function(match){return "["+(parseInt(match.substring(1,match.length))-1);});
+            i=numLoops.index;
+          }
+          break;
         case "i":
           //Convert to integer
           stackInt = parseInt(stack);
@@ -180,12 +190,19 @@ var Main = function(_input, _args) {
           //Add '+'
           if (!(nextChar == "\"")) {
             //number
+            alert(ops[i+1]);
             var num = 0;
+            //TODO
+            if(ops[i+1] === "@") {
+              var re = /\[(\d+)/;
+              num = parseInt(re.exec(ops)[1]);  
+            }else{
             var matched = false;
             var numRe = /\d+/;
             var match = numRe.exec(ops.substring(i, ops.length));
             i = i + match.length;
             num = parseInt(match);
+            }
             stackInt += num;
             stack += num;
           } else {
