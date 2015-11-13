@@ -25,7 +25,8 @@ var f = function() {
   var t = document.getElementById("t");
   var p = document.getElementById("p");
   var n = document.getElementById("n");
-  p.textContent = Main(t.value, n.value + "") + "";
+  p.innerText = Main(t.value, n.value + "");
+  console.log(Main(t.value, n.value + ""));
 }
 
 //code for prime number checker taken from https://github.com/vihanb/TeaScript/blob/master/teascript.js
@@ -105,14 +106,18 @@ var Main = function(_input, _args) {
       }
       //console.log(nextChar);
       switch (op) {
-        case "]"://repeat statement
+        case "["://repeat statement
           var numRe = /\[(\d+)/;
-          var numLoops = numRe.exec(ops.substring(0, i));
-          var loops = numLoops[1];
-          if(parseInt(loops)>1) {
-            ops = ops.replace(/\[\d+/g, function(match){return "["+(parseInt(match.substring(1,match.length))-1);});
-            i=numLoops.index;
+          var numLoops = numRe.exec(ops.substring(i, ops.length));
+          var loops = parseInt(numLoops[1]);
+          var commandsRe = /\[\d+([^\]]*)\]/;
+          var commandsTested = commandsRe.exec(ops.substring(i, ops.length));
+          var commands = commandsTested[1];
+          console.log(commands+"");
+          for(var j = 1; j <= loops; j++) {
+            stack = Main(stack+"^"+commands.replace(/@/g, j+""), _args);
           }
+          i=i+numLoops[1].length+commands.length + 1;
           break;
         case "i":
           //Convert to integer
@@ -190,7 +195,6 @@ var Main = function(_input, _args) {
           //Add '+'
           if (!(nextChar == "\"")) {
             //number
-            //alert(ops[i+1]);
             var num = 0;
             //TODO
             if(ops[i+1] === "@") {
