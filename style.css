@@ -34,6 +34,7 @@ textarea {
     height: 100px;
     color: black;
     font-size: 125%;
+    overflow-y: scroll;
 }
 
 .code {
