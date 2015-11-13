@@ -2,12 +2,12 @@
 <html>
 <head>
 	<link href='https://fonts.googleapis.com/css?family=Roboto+Mono' rel='stylesheet' type='text/css'>
-	<title>Carrot ^6 interpreter</title>
+	<title>Carrot ^7 interpreter</title>
 	<link rel='stylesheet' href='style.css'/>
 	<script src='script.js'></script>
 </head>
 <body>
-    <h1>Carrot language compiler (Version: ^6)</h1>
+    <h1>Carrot language interpreter (Version: ^7)</h1>
     <h4>Please note that this language is still under construction. Source code for this website is at <a href="https://github.com/kritixilithos/Carrot/">GitHub</a>.</h4>
     <p><b>Code:</b></p>
     <textarea id="t" placeholder="Code..."></textarea><br><br>
@@ -16,8 +16,8 @@
     <button id="b" onClick="f()">Compile and Execute</button><br><br>
     <p><b>Output:</b></p>
     <p id="p"><i>Output...</i></p>
-    <h4>Carrot is an esoteric "programming language" made for code-golf created by <a href="http://codegolf.stackexchange.com/">PPCG</a> user <a href="http://codegolf.stackexchange.com/users/41805/">Kritixi Lithos</a>.</h4>
-    <h4>Credits: Carrot was inspired by TeaScript, CJam and Pyth.  The code for primality checking is taken from Vihan's TeaScript <a href="https://github.com/vihanb/TeaScript/blob/master/teascript.js">source code</a>. The <a href="https://www.google.com/fonts/specimen/Roboto+Mono">Roboto Mono</a> font was taken from Google Fonts. </h4>
+    <h4>Carrot is an esoteric "programming language" made for code-golf created by <a href="http://codegolf.stackexchange.com/">Programming Puzzles and Code Golf(PCG)</a> user <a href="http://codegolf.stackexchange.com/users/41805/">Kritixi Lithos</a>.</h4>
+    <h4>Credits: Carrot was inspired by TeaScript, CJam and Pyth. The code for primality checking is taken from Vihan's TeaScript <a href="https://github.com/vihanb/TeaScript/blob/master/teascript.js">source code</a>. This <a href="https://www.google.com/fonts/specimen/Roboto+Mono">Roboto Mono</a> font was taken from Google Fonts. </h4>
     <h2>Cheatsheet:</h2>
     <p>
         This is how every program in Carrot looks like:<br>
@@ -61,10 +61,14 @@
         <li>"#" and "$": The string/int values of the input respectively</li>
         <li>"P": primality checking</li>
         <li>"?:|": if-else statements</li>
-        <li>"[]": repeat loop</li>
+        <li>"[]": repeat loop, "@": the iterating variable</li>
     </ul>
     <br>
     <h2>Revision History:</h2>
+    November 13th, 2015 (Revision 7 - Version ^7)
+    <ul>
+        <li>Modified "[]": added "@": the variable holding the iterating number</li>
+    </ul>
     November 8th, 2015 (Revision 6 - Version ^6)
     <ul>
         <li>Added "[]": Repeat loop</li>
