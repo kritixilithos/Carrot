@@ -1,3 +1,5 @@
+>Note: I have stopped developing this language a long time ago. Yes, this message is a bit *too* late
+
 # Carrot
 
 Carrot is a 1D esoteric programming language (esolang) made for code-golfing created by PPCG user Kritixi Lithos.
