@@ -32,7 +32,7 @@ var stackF = 0.0;
 var stackA = [];
 var stackMode = ""; //"" = String; I = int; F = float; A = array
 var operationMode = "";
-
+ 
 var buildMode = "";
 var stringBuilding;
 var stringBuilder;
