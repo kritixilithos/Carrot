@@ -16,36 +16,38 @@ textarea {
   padding: 5px;
   color: black;
   font-family: 'Roboto Mono', monospace;
-  width: 100%;
+  width: 97.5%;
   font-size: 125%;
+  outline: none;
 }
 
 #b {
-    height: 21px;
-    border: 2px solid;
-    background: white;
-    border-radius: 5px;
+  height: 21px;
+  border: 2px solid;
+  background: white;
+  border-radius: 5px;
 }
 
-#p {
-    border: 1px solid black;
-    padding: 5px;
-    background: gray;
-    height: 100px;
-    color: black;
-    font-size: 125%;
-    overflow-y: scroll;
+#output {
+  border: 1px solid black;
+  padding: 5px;
+	display: block;
+  background: lightgray;
+  /*height: 100px;*/
+  color: black;
+  font-size: 125%;
+  overflow-y: auto;
 }
 
 .code {
-    background: #AAA;
-    padding: 5px;
-    white-space: pre;
+  background: #AAA;
+  padding: 5px;
+  white-space: pre;
 }
 
 footer {
-    background: black;
-    color: white;
-    padding: 5px;
-    text-align: center;
+  background: black;
+  color: white;
+  padding: 5px;
+  text-align: center;
 }
