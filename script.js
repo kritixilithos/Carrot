@@ -1,6 +1,17 @@
 window.onload = function() {
   console.log("Started");
   var b = document.getElementById("b");
+  //function called when Execute Program button is clicked
+  b.onclick = function() {
+    var program = document.getElementById("program");
+    var output = document.getElementById("output");
+    output.innerText = ""; //clearing output
+    var input = document.getElementById("input");
+    var programResult = Main(program.value, input.value + "");
+    output.innerText = programResult;
+    console.log("Output: " + programResult);
+    console.log("---------------");
+  }
   var program = document.getElementById("program");
   var input = document.getElementById("input");
 
@@ -9,18 +20,6 @@ window.onload = function() {
   //t.textContent = getQueryVariable("code");
   //n.textContent = getQueryVariable("input");
 };
-//function called when Execute Program button is clicked
-var b = document.getElementById("b");
-b.onclick = function() {
-  var program = document.getElementById("program");
-  var output = document.getElementById("output");
-  output.innerText = ""; //clearing output
-  var input = document.getElementById("input");
-  var programResult = Main(program.value, input.value + "");
-  output.innerText = programResult;
-  console.log("Output: " + programResult);
-  console.log("---------------");
-}
 
 //IMPORTANT GLOBAL VARS
 var stack = "";
