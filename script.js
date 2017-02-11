@@ -1,245 +1,446 @@
 window.onload = function() {
   console.log("Started");
   var b = document.getElementById("b");
-  var t = document.getElementById("t");
-  var n = document.getElementById("n");
-  
-  console.log(getQueryVariable("code") +":"+ getQueryVariable("input"));
-  
-  t.textContent = getQueryVariable("code");
-  n.textContent = getQueryVariable("input");
+  var program = document.getElementById("program");
+  var input = document.getElementById("input");
+
+  //console.log(getQueryVariable("code") +":"+ getQueryVariable("input"));
+
+  //t.textContent = getQueryVariable("code");
+  //n.textContent = getQueryVariable("input");
 };
+//function called when Execute Program button is clicked
+b.onclick = function() {
+  var program = document.getElementById("program");
+  var output = document.getElementById("output");
+  output.innerText = ""; //clearing output
+  var input = document.getElementById("input");
+  var programResult = Main(program.value, input.value + "");
+  output.innerText = programResult;
+  console.log("Output: " + programResult);
+  console.log("---------------");
+}
 
-function getQueryVariable(variable)
-{
-  var query = window.location.search.substring(1);
-  var vars = query.split("&");
-  for (var i=0;i<vars.length;i++) {
-    var pair = vars[i].split("=");
-    if(pair[0] == variable){return pair[1];}
+//IMPORTANT GLOBAL VARS
+var stack = "";
+var code = "";
+var input = [];
+
+var noCaretBuilding = true;
+var stackI = 0;
+var stackF = 0.0;
+var stackA = [];
+var stackMode = ""; //"" = String; I = int; F = float; A = array
+var operationMode = "";
+
+var buildMode = "";
+var stringBuilding;
+var stringBuilder;
+var stringMode;
+var intBuilding;
+var intBuilder;
+var floatBuilding;
+var floatBuilder;
+var regexBuilding;
+var regexBuilder
+var regexMode;
+
+var caretFuncMode = "n"; //n for normal, e for escape
+//parsing the c^rrot datetype
+function caret(char, input, stack) {
+  console.log(char);
+  if (caretFuncMode == "e") {
+    caretFuncMode = "n";
+    return char;
   }
-  return("");
-}
-
-var f = function() {
-  var t = document.getElementById("t");
-  var p = document.getElementById("p");
-  var n = document.getElementById("n");
-  p.innerText = Main(t.value, n.value + "");
-  console.log(Main(t.value, n.value + ""));
-}
-
-//code for prime number checker taken from https://github.com/vihanb/TeaScript/blob/master/teascript.js
-var checkForPrime = function(number) {
-  var start = 2;
-  while (start <= Math.sqrt(number)) {
-    if (number % start++ < 1) return false;
+  if (char === "^") return null;
+  if (char === "#") return input.join("\n");
+	if (char === "$") {
+		return input.shift(-1);
+	}
+  if (char === "\\") {
+    caretFuncMode = "e";
+    return "";
   }
-  return number > 1;
+  return char;
 }
 
-var evaluate = function(match) {
-  return eval(match);
-}
-
-var Main = function(_input, _args) {
-  var stack = "";
-  var typeMode = "string";
-  if (_input.indexOf("^") == -1) {
-    var stack = _input + "";
-    var args = _args;
-    if (stack.indexOf("#") != -1) {
-      stack = stack.replace(/#/g, args);
-    }
-    if (stack.indexOf("$") != -1) {
-      stack = stack.replace(/\$/g, parseInt(args));
-    }
-    stack = stack.replace(/\(([^\(\)]*)\)/g, evaluate);//eval parenthesis
-  } else {
-    //Variables
-    var input = _input.split(/\^/);
-    var args = _args;
-    var stack = input[0] + "";
-    var ops = input[1];
-    var stackVar = stack; //TODO
-    var stackInt = 0;
-    var stackIntVar = stackInt; //TODO
-    var stackBool = true;
-    var stackBoolVar = stackBool;
-    var isInt = false;
-    var typeMode = "string";
-
-    //Carrot variables: # and *
-    if (ops.indexOf("#") != -1) {
-      ops = ops.replace(/#/g, "\"" + args + "\"");
-    }
-    if (ops.indexOf("$") != -1) {
-      ops = ops.replace(/\$/g, parseInt(args));
-    }
-    if (stack.indexOf("#") != -1) {
-      stack = stack.replace(/#/g, args);
-    }
-    if (stack.indexOf("$") != -1) {
-      stack = stack.replace(/\$/g, parseInt(args));
-    }
-
-    ops = ops.replace(/\(([^\(\)]*)\)/g, evaluate);//eval parenthesis
-
-    ops=ops.replace(/(1|true)\?([^\:]*)\:([^\|]*)\|/g, "$2");//if statements
-    ops=ops.replace(/(0|false)\?([^\:]*)\:([^\|]*)\|/g, "$3");//else statements
-
-    //checking if caret is missing
-    try {
-      console.log(ops.length);
-    } catch (e) {
-      //alert("No code");
-    }
-
-    //Iterating through the operators.
-    for (var i = 0; i < ops.length; i++) {
-      var op = ops[i];
-      //ops=ops.replace(/\[(\d+)[^\]]*\]/, function($0, $1){return $0.replace(/@/g, $1);});
-      try {
-        var nextChar = ops[i + 1];
-      } catch (e) {
-        nextChar = 0;
+//applying monad operations
+function applyOperation(arg) {
+  //what to do for each op
+  switch (operationMode) {
+    //TODO: add support for other stack types
+    case "+":
+      if (stringBuilder !== "") {
+				if(stackMode === "A") {
+					stackMode = "";
+					stack = stackA.join(stringBuilder);
+				}else{
+        	stackMode = "";
+        	stack += stringBuilder;
+				}
+        stringBuilder = "";
+				buildMode="";
+      } else if (floatBuilder !== "") {
+        //v for converting int to float if necessary
+        if (stackMode === "I" && /\./.test(floatBuilder)) {
+          stackMode = "F";
+          stackF = stackI + 0.0;
+        }
+				if(stackMode === "A") {
+					for(var i=0; i<stackA.length; i++) {
+						stackA[i] = parseFloat(stackA[i]+"")+parseFloat(floatBuilder);
+					}
+				}else{
+        	eval(`stack${stackMode} += parseFloat(${floatBuilder})`);
+				}
+        floatBuilder = "";
+				buildMode="";
+      } else if(arg === " ") {
+				if(stackMode === "A") {
+					stackMode = "F";
+					stackF = 0.0;
+					for(element of stackA) {
+						stackF += parseFloat(element+"");
+					}
+				}
+			}
+      break;
+    case "-":
+      if (stringBuilder !== "") {
+        stackMode = "";
+        stack = stack.split(stringBuilder).join("");
+        stringBuilder = "";
+				buildMode="";
+      } else if (floatBuilder !== "") {
+        //v for converting int to float if necessary
+        if (stackMode === "I" && /\./.test(floatBuilder)) {
+          stackMode = "F";
+          stackF = stackI + 0.0;
+        }
+				if(stackMode === "A") {
+					for(var i=0; i<stackA.length; i++) {
+						stackA[i] = parseFloat(stackA[i]+"")-parseFloat(floatBuilder);
+					}
+				}else{
+					if(stackMode === "") {
+						stack = stack.substring(parseInt(floatBuilder+""));
+					}else {
+  	      	eval(`stack${stackMode} -= parseFloat(${floatBuilder})`);
+					}
+				}
+        floatBuilder = "";
+				buildMode="";
       }
-      //console.log(nextChar);
-      switch (op) {
-        case "["://repeat statement
-          var numRe = /\[(\d+)/;
-          var numLoops = numRe.exec(ops.substring(i, ops.length));
-          var loops = parseInt(numLoops[1]);
-          var commandsRe = /\[\d+([^\]]*)\]/;
-          var commandsTested = commandsRe.exec(ops.substring(i, ops.length));
-          var commands = commandsTested[1];
-          console.log(commands+"");
-          for(var j = 1; j <= loops; j++) {
-            stack = Main(stack+"^"+commands.replace(/@/g, j+""), _args);
-          }
-          i=i+numLoops[1].length+commands.length + 1;
-          break;
-        case "i":
-          //Convert to integer
-          stackInt = parseInt(stack);
-          stackIntVar = stackInt;
-          typeMode = "int";
-          break;
-        case "P":
-          if (stackInt !== 0) {
-            stackBool = checkForPrime(stackInt);
-          } else {
-            stackBool = checkForPrime(parseInt(stack));
-          }
-          typeMode = "bool";
-          break;
-        case "/":
-          //Divide '/'
-          switch (nextChar) {
-            case "\"":
-              break
-            case "\'":
-              break;
-            default:
-              //number
-              var num = 0;
-              var matched = false;
-              var numRe = /\d+/;
-              var match = numRe.exec(ops.substring(i, ops.length));
-              num = parseInt(match);
-              stackInt /= num;
-              if(stack.length > num) {
-                stack = stack.slice(0,num) + stack.slice(num+1);
-              }
-          }
-          break;
-        case "*":
-          //Multiply '*'
-          switch (nextChar) {
-            case "\"":
-              break
-            case "\'":
-              break;
-            default:
-              //number
-              var num = 0;
-              var matched = false;
-              var numRe = /\d+/;
-              var match = numRe.exec(ops.substring(i, ops.length));
-              num = parseInt(match);
-              stackInt *= num;
-              for (var j = 0; j++ < num;) {
-                stack += stackVar;
-              }
-          }
-          break;
-        case "-":
-          //Subtract '-'
-          switch (nextChar) {
-            case "\"":
-              break
-            case "\'":
-              break;
-            default:
-              //number
-              var num = 0;
-              var matched = false;
-              var numRe = /\d+/;
-              var match = numRe.exec(ops.substring(i, ops.length));
-              num = parseInt(match);
-              stackInt -= num;
-              stack = stack.substring(0, stack.length - num);
-          }
-          break;
-        case "+":
-          //Add '+'
-          if (!(nextChar == "\"")) {
-            //number
-            var num = 0;
-            //TODO
-            if(ops[i+1] === "@") {
-              var re = /\[(\d+)/;
-              num = parseInt(re.exec(ops)[1]);  
-            }else{
-            var matched = false;
-            var numRe = /\d+/;
-            var match = numRe.exec(ops.substring(i, ops.length));
-            i = i + match.length;
-            num = parseInt(match);
-            }
-            stackInt += num;
-            stack += num;
-          } else {
-            //string
-            var string = "";
-            var matched = false;
-            var stringRe = /\"([^\"]*)\"/;
-            var match = stringRe.exec(ops.substring(i + 1, ops.length));
-            string = match[1]; //getting the captured group
-            i = i + 2 + string.length;
-            if (typeMode == "int") {
-              //converting to string
-              typeMode = "string";
-              stack = stackInt + string;
-            } else if (typeMode == "string") {
-              stack += string;
-            }
-          }
+      break;
+    case "*":
+			//TODO: add support for string stack type
+      if (stringBuilder !== "") {/*
+        stackMode = "";
+        stack = stack.split(stringBuilder).join("");
+        stringBuilder = "";*/
+				buildMode="";
+      } else if (floatBuilder !== "") {
+        //v for converting int to float if necessary
+        if (stackMode === "I" && /\./.test(floatBuilder)) {
+          stackMode = "F";
+          stackF = stackI + 0.0;
+        }
+				if(stackMode === "A") {
+					for(var i=0; i<stackA.length; i++) {
+						stackA[i] = parseFloat(stackA[i]+"")*parseFloat(floatBuilder);
+					}
+					break;
+				}else{
+					if(stackMode === "") {
+						//TODO: fractional number support
+						var originalStack = stack;
+						for(var i=0;i<parseInt(floatBuilder+"");i++) {
+							stack+=originalStack;
+						}
+					}else {
+  	      	eval(`stack${stackMode} *= parseFloat(${floatBuilder})`);
+					}
+				}
+        floatBuilder = "";
+				buildMode="";
+      } else if(arg === " ") {
+				if(stackMode === "A") {
+					stackMode = "F";
+					stackF = 1.0;
+					for(element of stackA) {
+						stackF *= parseFloat(element+"");
+					}
+				}
+			}
+      break;
+	  case "\/":
+			//TODO: add support for string stack type
+      if (regexBuilder !== "") {
+        regexMode = "n";
+				stackMode = "A";
+        eval(`stackA=stack.match(${regexBuilder})`);
+        regexBuilder = "";
+				buildMode="";
+      } else if (floatBuilder !== "") {
+        //v for converting int to float if necessary
+        if (stackMode === "I" && /\./.test(floatBuilder)) {
+          stackMode = "F";
+          stackF = stackI + 0.0;
+        }
+				if(stackMode === "A") {
+					for(var i=0; i<stackA.length; i++) {
+						stackA[i] = parseFloat(stackA[i]+"")/parseFloat(floatBuilder);
+					}
+					break;
+				}else{
+					if(stackMode === "") {
+          	var spliceIndex=parseInt(floatBuilder+"");
+						stack=stack.slice(0,spliceIndex)+stack.slice(spliceIndex+1,stack.length);
+					}else {
+  	      	eval(`stack${stackMode} /= parseFloat(${floatBuilder})`);
+					}
+				}
+        floatBuilder = "";
+				buildMode="";
+      }
+      break;
+  }
+  operationMode = "";
+}
 
-          break;
+//MAIN function
+function Main(_input, _args) {
+  stack = ""; //setting it to empty
+  stackI = 0;
+	stackF = 0.0;
+	stackA = [];
+  caretMode = true;
+  stackMode = ""; //"" = string, I = int
+  caretFuncMode = "n";
+  operationMode = ""; //" for string building
+
+	buildMode="";
+  stringBuilding = false;
+  stringBuilder  = "";
+  stringMode     = "n"; //n is normal, e is escape
+  intBuilding = false;
+  intBuilder  = "";
+  floatBuilding = false;
+  floatBuilder  = "";
+	regexBuilding = false;
+	regexBuilder  = "";
+	regexMode     = "n"; //n is normal, f is flag
+
+  code = _input;
+  input = _args.split("\n");
+  for (var i = 0; i < code.length; i++) {
+    var onChar = code[i]; //this is the char we are processing
+    if (caretMode) {
+      var caretResult = caret(onChar, input, stack);
+      if (caretResult === null) caretMode = false;
+      else stack += caretResult;
+    } else {
+      //building the string
+      if (stringBuilding) {
+				if(stringMode == "e") {
+					stringBuilder += onChar;
+					stringMode = "n";
+					continue;
+				}
+        switch (onChar) {
+          case "\"":
+            stringBuilding = false;
+            break;
+          case "\\":
+            stringMode = "e";
+            continue;
+					case "$":
+						stringBuilder += (input.shift(-1));
+						continue;
+					case "#":
+						stringBuilder += input.join("\n");
+						continue;
+          default:
+            stringBuilder += onChar;
+            console.log("stringBuilder=" + stringBuilder);
+            continue;
+        }
+      }
+
+      //for stringbuilding
+      if (onChar == "\"" && stringBuilder == "" && buildMode === "") {
+        stringBuilding = true;
+				buildMode="s";
+        continue;
+      }
+			
+			//float arg using "$"
+			if(operationMode !== "" && buildMode === "" && /[$#]/.test(onChar)) {
+				if(stackMode === "F" && onChar === "$") {
+					floatBuilder = parseFloat(input.shift(-1)+"");
+					applyOperation();
+				}else if(stackMode === "") {
+					stringBuilder = onChar==="$"?input.shift(-1):input.join("\n");
+				}
+			}
+			
+      //floatbuilding
+      if (floatBuilding) {
+        if (/[0-9\.]/.test(onChar)) {
+          floatBuilder += onChar;
+          console.log("floatBuilder=" + floatBuilder);
+          if (i === code.length - 1) {
+            floatBuilding = false;
+          } else {
+            continue;
+          }
+        } else {
+          floatBuilding = false;
+					applyOperation();
+        }
+      }
+      //floatbuilding
+      if (/[0-9\.\-]/.test(onChar) && floatBuilder === "" && operationMode !== "" && buildMode === "") {
+        floatBuilding = true;
+				buildMode="f";
+        floatBuilder += onChar;
+        console.log("floatBuilder=" + floatBuilder);
+        if (i !== code.length - 1) continue;
+      }
+			
+			//regexBuilding
+			if (regexBuilding) {
+				if (regexMode === "n") {
+          regexBuilder += onChar;
+					
+					if(onChar === "\/") {
+						if(i !== code.length - 1) {
+							regexMode = "f";
+							continue;
+						}else{
+							applyOperation();
+						}	
+					}else {
+						continue;
+					}
+				}else if(regexMode === "f") {
+					regexBuilder += onChar;
+					if(/gmif/.test(onChar)) {
+						regexBuilder += onChar;
+						if(i === code.length-1) {
+							applyOperation();
+						}else{
+							continue;
+						}
+					}else{
+						regexBuilding = false;
+						applyOperation();
+					}
+				}
+			}
+			
+			//regexBuilding
+			if (onChar === "\/" && regexBuilder === "" && operationMode !== "" && buildMode === "") {
+				regexBuilding = true;
+				buildMode="r";
+				regexBuilder += onChar;
+				console.log("regexBuilder=" + regexBuilder);
+				regexMode = "n";
+				continue;
+			}
+
+      //normal operations
+      if (operationMode == "") {
+        switch (onChar) {
+          case '^':
+            caretMode = true;
+            break;
+          case 'I':
+            //v for handling case of empty stack
+            eval(`stackI = parseFloat((stack${stackMode}+"").length>0?stack${stackMode}+"":"0")`);
+            stackMode = "I";
+            break;
+          case 'F':
+            eval(`stackF = parseFloat((stack${stackMode}+"").length>0?stack${stackMode}+"":"0")`);
+            stackMode = "F";
+            break;
+          case 'S':
+            eval(`stack = stack${stackMode}+""`);
+            stackMode = "";
+            break;
+					case 'A':
+						//monad it takes the next char as arg
+						eval(`stackA = (stack${stackMode}+"").split(\`${code[i+1]+""}\`)`);
+						stackMode = "A";
+						i++;
+						break;
+					default:
+						operationMode = onChar;
+        }
+        continue;
+      } else {
+				console.log(operationMode);
+				applyOperation(onChar);
+        continue;
       }
     }
   }
 
-  switch (typeMode) {
-    case "string":
-      return stack;
-      break;
-    case "int":
-      return stackInt;
-      break;
-    case "bool":
-      return stackBool;
-      break;
-  }
+  return eval(`stack${stackMode}`);
 }
+
+/**
+ * TODO:
+ * =====
+ * 
+ * intBuilder            [ ]
+ * convert to string     [x]
+ * fix bug with 1^I+4S+4 [x]
+ * - for stack (string)  [x]
+ * negative numbers      [x]
+ * * op for fraction and negatives for stack [ ]
+ * / op for stack with regex arg             [x]
+ * / op for stack with int arg               [x]
+ * operation support for arrays              [ ]
+ * - stringMode string arg substitution      [ ]
+ **/
+
+/**
+ * DOCS (will update as I complete commands)
+ * =========================================
+ *
+ * stack^operations^... (goes on endlessly)
+ *  - stack  = string
+ *  - stackI = int (also float maybe)
+ *
+ *  (int is inaccurately used to describe any number)
+ *
+ * data types:
+ *  there are 4 types of constants in carrot: c^rrot, string, number, array, regex
+ *
+ *  c^rrot: data
+ *  string: "data" (has escape characters)
+ *  num: 123.456
+ *  regex: /^(\d)u+$/gmi
+ *  space: ` `
+ *
+ * operators:
+ *  ops are defined by their type (monad or nilad), the arguments they take
+ *  (int or string or regex) and the stackMode (string, float, int, array, ...)
+ *
+ *  nilads (takes in 0 arguments):
+ *   I F S
+ *  monads:
+ *   + - * / A
+ *
+ * list of operators
+ *  I = converts to intMode
+ *  F = converts to floatMode
+ *  S = converts to stringMode
+ *  A = converts to arrayMode by splitting at next char
+ *  + = string concatenation/int addition
+ *  - = string (remove_all_instancesOf/substring)/int subtraction 
+ *  * = string (/multi-duplication)/int multiplication
+ *  / = string (regex_match/remove_char_at_index)/int division
+ **/
