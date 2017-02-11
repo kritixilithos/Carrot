@@ -10,6 +10,7 @@ window.onload = function() {
   //n.textContent = getQueryVariable("input");
 };
 //function called when Execute Program button is clicked
+var b = document.getElementById("b");
 b.onclick = function() {
   var program = document.getElementById("program");
   var output = document.getElementById("output");
