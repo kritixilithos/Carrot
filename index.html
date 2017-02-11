@@ -1,32 +1,47 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<link href='https://fonts.googleapis.com/css?family=Roboto+Mono' rel='stylesheet' type='text/css'>
-	<title>Carrot ^7 interpreter</title>
-	<link rel='stylesheet' href='style.css'/>
-	<script src='script.js'></script>
-</head>
-<body>
-    <h1>Carrot language interpreter (Version: ^7)</h1>
-    <h4>Please note that this language is still under construction. Source code for this website is at <a href="https://github.com/kritixilithos/Carrot/">GitHub</a>.</h4>
+
+  <head>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Mono' rel='stylesheet' type='text/css'>
+    <title>Carrot beta interpreter</title>
+    <link rel='stylesheet' href='style.css' />
+    <script src='script.js'></script>
+  </head>
+
+  <body>
+    <h1>Carrot language interpreter (Version: beta)</h1>
+    <h4>Note that this language is still under construction. Source code for this website is at <a href="https://github.com/kritixilithos/Carrot/">GitHub</a>.</h4>
     <p><b>Code:</b></p>
-    <textarea id="t" placeholder="Code..."></textarea><br><br>
+    <textarea id="program" placeholder="Code..."></textarea>
+    <br>
+    <br>
     <p><b>Input:</b></p>
-    <textarea id="n" placeholder="Command-line arguments..."></textarea><br><br>
-    <button id="b" onClick="f()">Compile and Execute</button><br><br>
+    <textarea id="input" placeholder="Input..."></textarea>
+    <br>
+    <br>
+    <button id="b">Execute Program</button>
+    <br>
+    <br>
     <p><b>Output:</b></p>
-    <p id="p"><i>Output...</i></p>
-    <h4>Carrot is an esoteric "programming language" made for code-golf created by <a href="http://codegolf.stackexchange.com/">Programming Puzzles and Code Golf(PCG)</a> user <a href="http://codegolf.stackexchange.com/users/41805/">Kritixi Lithos</a>.</h4>
-    <h4>Credits: Carrot was inspired by TeaScript, CJam and Pyth. The code for primality checking is taken from Vihan's TeaScript <a href="https://github.com/vihanb/TeaScript/blob/master/teascript.js">source code</a>. This <a href="https://www.google.com/fonts/specimen/Roboto+Mono">Roboto Mono</a> font was taken from Google Fonts. </h4>
-    <h2>Cheatsheet:</h2>
+    <p id="output"><i>Output...</i></p>
+    <h4>Carrot is an esoteric programming language made for code-golf created by <a href="http://codegolf.stackexchange.com/">Programming Puzzles and Code Golf(PPCG)</a> user <a href="http://codegolf.stackexchange.com/users/41805/">Kritixi Lithos</a>.</h4>
+    <h4>Credits: Carrot was inspired by TeaScript, CJam, Pyth and V. This <a href="https://www.google.com/fonts/specimen/Roboto+Mono">Roboto Mono</a> font is from Google Fonts. </h4>
+    <h2>Quick Intro:</h2>
     <p>
-        This is how every program in Carrot looks like:<br>
+      This is how every program in Carrot looks like:
+      <br>
     </p>
-    <div class="code"><i>stack</i>^<i>commands</i></div>
-    
-    <p>The <i>stack</i> starts off as a String that can further be manipulated with the <i>commands</i>. The <i>stack</i> doesn't need to be enclosed in quotes. Another thing to note is the the <i>stack</i> is basically a String and <b>not</b> an array. Next up is the caret "^". This is required in every program as it seperates the <i>stack</i> from the <i>commands</i>. The <i>commands</i> manipulate the <i>stack</i>, to put it simply. At the termination of the program, the <i>stack</i>, after all the <i>commands</i> are applied, is printed to the output.</p>
-    <h3>Learn Via Examples</h3>
-    <p>
+    <div class="code"><i>stack</i>^<i>operations</i></div>
+
+    <p>The <i>stack</i> starts off as a String that can further be manipulated with the <i>operations</i>. The <i>stack</i> doesn't need to be enclosed in quotes. Another thing to note is the the <i>stack</i> is basically a String and <b>not</b> an array.
+      Next up is the caret "^". This is required in every program as it seperates the <i>stack</i> from the <i>operations</i>. The <i>operations</i> manipulate the <i>stack</i>, to put it simply. At the termination of the program, the <i>stack</i>, after
+      all the <i>operations</i> are applied, is printed to the output.</p>
+
+<br>
+
+		To learn more, you
+		can visit the <a href="https://github.com/kritixilithos/Carrot/wiki">wiki</a> for Carrot on GitHub.
+    <!--p>
         <div class="code">Hello, World!^</div>
         This is a simple "Hello, World!" program. "Hello, World!" is pushed into the stack and is printed to the console.
         
@@ -105,6 +120,7 @@
         <li>Added "i": convert stack into integer</li>
     </ul>
     <br>
-    <footer>Kritixi Lithos Copyright (c) 2015 </footer>
-</body>
+    <footer>Kritixi Lithos Copyright (c) 2015 </footer-->
+  </body>
+
 </html>
