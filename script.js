@@ -1,3 +1,6 @@
+/*
+Self note: when pasting code in github, remember to move the button onclick function to inside the window onload function. Move it outside on the onload function when using jsfiddle
+*/
 window.onload = function() {
   console.log("Started");
   var b = document.getElementById("b");
