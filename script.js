@@ -5,6 +5,7 @@ window.onload = function() {
   console.log("Started");
   var b = document.getElementById("b");
   //button
+  
     //function called when Execute Program button is clicked
   b.onclick = function() {
     var program = document.getElementById("program");
@@ -16,9 +17,7 @@ window.onload = function() {
     output.innerText = programResult;
     console.log("Output: " + programResult);
     console.log("---------------");
-    console.log(stack+6);
   }
-  
   
   var program = document.getElementById("program");
   var input = document.getElementById("input");
@@ -29,6 +28,8 @@ window.onload = function() {
   //n.textContent = getQueryVariable("input");
 };
 
+
+
 var Program = function(_input, _args) {
 
   //IMPORTANT GLOBAL VARS
@@ -36,6 +37,8 @@ var Program = function(_input, _args) {
   this.code = _input;
   this.args = _args;
   this.input = [];
+	//var this.that;
+  var that  = this;
 
   this.noCaretBuilding = true;
   this.caretMode = true;
@@ -56,24 +59,26 @@ var Program = function(_input, _args) {
 
   this.caretFuncMode = "n"; //n for normal, e for escape
 
-  this.privateVars = "stack,code,args,input,noCaretBuilding,caretMode,stackI,stackF,stackA,stackMode,operationMode,buildMode,stringBuilder,stringMode,intBuilder,floatBuilder,regexBuilder,regexMode,evalBuilder,caretFuncMode".split(",");
+  privateVars = "stack,code,args,input,noCaretBuilding,caretMode,stackI,stackF,stackA,stackMode,operationMode,buildMode,stringBuilder,stringMode,intBuilder,floatBuilder,regexBuilder,regexMode,evalBuilder,caretFuncMode".split(",");
 
   var stack,code,args,input,noCaretBuilding,caretMode,stackI,stackF,stackA,stackMode,operationMode,buildMode,stringBuilder,stringMode,intBuilder,floatBuilder,regexBuilder,regexMode,evalBuilder,caretFuncMode;
-
+//console.log("um"+that.stack);
   privateToPublic = function() {
     for(Var of privateVars) {
-      eval(`${Var} = this.${Var}`);
+      //console.log(that.stack);
+			//eval(`stack=this.stack+"a"`);
+      eval(`${Var} = that.${Var}`);
     }
   }
-
+console.log(this.stack);
   publicToPrivate = function() {
-    for(Var of privateVars) {
-      eval(`this.${Var} = ${Var}`);
+    for(Var of this.privateVars) {
+      eval(`that.${Var} = ${Var}`);
     }
   }
-
+privateToPublic();
   //parsing the c^rrot datetype
-  caret = function(char, input, stack) {
+  caret = function(char) {
     console.log(char);
     if (caretFuncMode == "e") {
       caretFuncMode = "n";
@@ -234,10 +239,15 @@ var Program = function(_input, _args) {
       case "S":
         if(stringBuilder !== "" || floatBuilder !== "") {
           if(stackMode === "A") {
-            stack = eval(`stackA.join(${buildMode}Builder+"")`);
+						if(floatBuilder !== ""){
+            	stack = stackA.join(floatBuilder+"");
+							floatBuilder = "";
+						}else if(stringBuilder !== ""){
+							stack = stackA.join(stringBuilder+"");
+							stringBuilder = "";
+						}
             stackMode = "";
           }
-          eval(`${buildMode}Builder = ""`);
           buildMode = "";
         }
         break;
@@ -254,7 +264,7 @@ var Program = function(_input, _args) {
       //note: in the builder, when I use continue; it means that I don't want to applyOperation since the building is incomplete. Otherwise, it could even be misinterpreted as an operator
       var onChar = code[i]; //this is the char we are processing
       if (caretMode) {
-        var caretResult = caret(onChar, input, stack);
+        var caretResult = caret(onChar);
         if (caretResult === null) caretMode = false;
         else stack += caretResult;
       } else {
