@@ -5,7 +5,6 @@ window.onload = function() {
   console.log("Started");
   var b = document.getElementById("b");
   //button
-  
     //function called when Execute Program button is clicked
   b.onclick = function() {
     var program = document.getElementById("program");
@@ -17,8 +16,10 @@ window.onload = function() {
     output.innerText = programResult;
     console.log("Output: " + programResult);
     console.log("---------------");
+    console.log(stack+6);
   }
-  
+	
+	
   var program = document.getElementById("program");
   var input = document.getElementById("input");
 
@@ -102,7 +103,7 @@ privateToPublic();
     switch (operationMode) {
       //TODO: add support for other stack types
       case "+":
-        if (stringBuilder !== "") {
+        if (buildMode === "string") {
           if(stackMode === "A") {
             stackMode = "";
             stack = stackA.join(stringBuilder);
@@ -112,7 +113,7 @@ privateToPublic();
           }
           stringBuilder = "";
           buildMode="";
-        } else if (floatBuilder !== "") {
+        } else if (buildMode === "float") {
           //v for converting int to float if necessary
           if (stackMode === "I" && /\./.test(floatBuilder)) {
             stackMode = "F";
@@ -138,12 +139,12 @@ privateToPublic();
         }
         break;
       case "-":
-        if (stringBuilder !== "") {
+        if (buildMode === "string") {
           stackMode = "";
           stack = stack.split(stringBuilder).join("");
           stringBuilder = "";
           buildMode="";
-        } else if (floatBuilder !== "") {
+        } else if (buildMode === "float") {
           //v for converting int to float if necessary
           if (stackMode === "I" && /\./.test(floatBuilder)) {
             stackMode = "F";
@@ -166,12 +167,12 @@ privateToPublic();
         break;
       case "*":
         //TODO: add support for string stack type
-        if (stringBuilder !== "") {/*
+        if (buildMode === "string") {/*
           stackMode = "";
           stack = stack.split(stringBuilder).join("");
           stringBuilder = "";*/
           buildMode="";
-        } else if (floatBuilder !== "") {
+        } else if (buildMode === "float") {
           //v for converting int to float if necessary
           if (stackMode === "I" && /\./.test(floatBuilder)) {
             stackMode = "F";
@@ -207,13 +208,16 @@ privateToPublic();
         break;
       case "\/":
         //TODO: add support for string stack type
-        if (regexBuilder !== "") {
+        if (buildMode === "regex") {
           regexMode = "n";
           stackMode = "A";
           eval(`stackA=stack.match(${regexBuilder})`);
+					if(stackA === null){
+						stackA = [];
+					}
           regexBuilder = "";
           buildMode="";
-        } else if (floatBuilder !== "") {
+        } else if (buildMode === "float") {
           //v for converting int to float if necessary
           if (stackMode === "I" && /\./.test(floatBuilder)) {
             stackMode = "F";
@@ -237,12 +241,12 @@ privateToPublic();
         }
         break;
       case "S":
-        if(stringBuilder !== "" || floatBuilder !== "") {
+        if(buildMode === "string" || buildMode === "float") {
           if(stackMode === "A") {
-						if(floatBuilder !== ""){
+						if(buildMode === "float"){
             	stack = stackA.join(floatBuilder+"");
 							floatBuilder = "";
-						}else if(stringBuilder !== ""){
+						}else if(buildMode === "string"){
 							stack = stackA.join(stringBuilder+"");
 							stringBuilder = "";
 						}
@@ -278,7 +282,7 @@ privateToPublic();
           switch (onChar) {
             case "\"":
               //stringBuilding = false;
-              buildMode = "";
+              //buildMode = "";
               break;
             case "\\":
               stringMode = "e";
@@ -320,13 +324,13 @@ privateToPublic();
             console.log("floatBuilder=" + floatBuilder);
             if (i === code.length - 1) {
               //floatBuilding = false;
-              buildMode = "";
+              //buildMode = "";
             } else {
               continue;
             }
           } else {
             //floatBuilding = false;
-            buildMode = "";
+            //buildMode = "";
             applyOperation();
           }
         }
@@ -342,10 +346,14 @@ privateToPublic();
         //regexBuilding
         if (buildMode === "regex") {
           if (regexMode === "n") {
-            regexBuilder += onChar;
+						if(onChar === "#"){
+							regexBuilder += input.shift(-1);
+						}else{
+            	regexBuilder += onChar;
+						}
             console.log("regexBuilder=" + regexBuilder);
             
-            //start flags?                  escaped slash
+            //start /flags?/                escaped slash
             if(onChar === "\/" && code[i-1] !== "\\") {
               if(i !== code.length - 1) {
                 regexMode = "f";
@@ -368,7 +376,7 @@ privateToPublic();
               }
             }else{
               //regexBuilding = false;
-              buildMode = "";
+              //buildMode = "";
               console.log("regexBuilder=" + regexBuilder);
               applyOperation();
             }
