@@ -16,7 +16,6 @@ window.onload = function() {
     output.innerText = programResult;
     console.log("Output: " + programResult);
     console.log("---------------");
-    console.log(stack+6);
   }
 	
 	
