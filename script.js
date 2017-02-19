@@ -5,20 +5,28 @@ window.onload = function() {
   console.log("Started");
   var b = document.getElementById("b");
   //button
-    //function called when Execute Program button is clicked
+	  //function called when Execute Program button is clicked
   b.onclick = function() {
     var program = document.getElementById("program");
     var output = document.getElementById("output");
     output.innerText = ""; //clearing output
     var input = document.getElementById("input");
     var programRunner = new Program(program.value+"", input.value+"");
-    var programResult = programRunner.Main()[1];
-    output.innerText = programResult;
+		var status = document.getElementById("status");
+    var programResult;
+		try {
+			programResult = programRunner.Main()[1];
+			output.innerText = programResult;
+			status.innerText = "done.";
+		}catch(e) {
+			programResult = "" + e;
+			status.innerText = programResult;
+		}
     console.log("Output: " + programResult);
     console.log("---------------");
   }
 	
-	
+  
   var program = document.getElementById("program");
   var input = document.getElementById("input");
 
@@ -27,8 +35,6 @@ window.onload = function() {
   //t.textContent = getQueryVariable("code");
   //n.textContent = getQueryVariable("input");
 };
-
-
 
 var Program = function(_input, _args) {
 
@@ -70,13 +76,13 @@ var Program = function(_input, _args) {
       eval(`${Var} = that.${Var}`);
     }
   }
-console.log(this.stack);
+  console.log(this.stack);
   publicToPrivate = function() {
     for(Var of this.privateVars) {
       eval(`that.${Var} = ${Var}`);
     }
   }
-privateToPublic();
+  privateToPublic();
   //parsing the c^rrot datetype
   caret = function(char) {
     console.log(char);
@@ -256,11 +262,12 @@ privateToPublic();
         break;
     }
     operationMode = "";
+		document.getElementById("output").innerText=eval(`stack${stackMode}`);
   }
 
   //MAIN function
   this.Main = function() {
-
+		document.getElementById("status").innerText="running...\n";
     //code = _input;
     input = args.split("\n");
     for (var i = 0; i < code.length; i++) {
