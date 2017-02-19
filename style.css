@@ -28,15 +28,19 @@ textarea {
   border-radius: 5px;
 }
 
-#output {
+#output, #status {
   border: 1px solid black;
   padding: 5px;
-	display: block;
+  display: block;
   background: lightgray;
   /*height: 100px;*/
   color: black;
   font-size: 125%;
-  overflow-y: auto;
+  overflow-y: fixed;
+}
+
+#status {
+	font-size: 12px;
 }
 
 .code {
