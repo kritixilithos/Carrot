@@ -5,7 +5,8 @@ window.onload = function() {
   console.log("Started");
   var b = document.getElementById("b");
   //button
-	  //function called when Execute Program button is clicked
+  
+  //function called when Execute Program button is clicked
   b.onclick = function() {
     var program = document.getElementById("program");
     var output = document.getElementById("output");
@@ -25,8 +26,6 @@ window.onload = function() {
     console.log("Output: " + programResult);
     console.log("---------------");
   }
-	
-  
   var program = document.getElementById("program");
   var input = document.getElementById("input");
 
@@ -35,6 +34,8 @@ window.onload = function() {
   //t.textContent = getQueryVariable("code");
   //n.textContent = getQueryVariable("input");
 };
+
+
 
 var Program = function(_input, _args) {
 
@@ -317,6 +318,7 @@ var Program = function(_input, _args) {
         if(operationMode !== "" && buildMode === "" && /[$#]/.test(onChar)) {
           if(stackMode === "F" && onChar === "$") {
             floatBuilder = parseFloat(input.shift(-1)+"");
+						buildMode = "float";
             applyOperation();
           }else if(stackMode === "") {
             stringBuilder = onChar==="$"?input.shift(-1):input.join("\n");
