@@ -2,474 +2,484 @@
 Self note: when pasting code in github, remember to move the button onclick function to inside the window onload function. Move it outside on the onload function when using jsfiddle
 */
 window.onload = function() {
-  console.log("Started");
-  var b = document.getElementById("b");
-  //button
-  
-  //function called when Execute Program button is clicked
-  b.onclick = function() {
-    var program = document.getElementById("program");
-    var output = document.getElementById("output");
-    output.innerText = ""; //clearing output
-    var input = document.getElementById("input");
-    var programRunner = new Program(program.value+"", input.value+"");
-		var status = document.getElementById("status");
-    var programResult;
-		try {
-			programResult = programRunner.Main()[1];
-			output.innerText = programResult;
-			status.innerText = "done.";
-		}catch(e) {
-			programResult = "" + e;
-			status.innerText = programResult;
-		}
-    console.log("Output: " + programResult);
-    console.log("---------------");
-  }
-  var program = document.getElementById("program");
-  var input = document.getElementById("input");
+	console.log("Started");
+	var b = document.getElementById("b");
+	//button
 
-  //console.log(getQueryVariable("code") +":"+ getQueryVariable("input"));
+	var program = document.getElementById("program");
+	var input = document.getElementById("input");
 
-  //t.textContent = getQueryVariable("code");
-  //n.textContent = getQueryVariable("input");
+	//console.log(getQueryVariable("code") +":"+ getQueryVariable("input"));
+
+	//t.textContent = getQueryVariable("code");
+	//n.textContent = getQueryVariable("input");
 };
 
 
+//function called when Execute Program button is clicked
+b.onclick = function() {
+	var program = document.getElementById("program");
+	var output = document.getElementById("output");
+	output.innerText = ""; //clearing output
+	var input = document.getElementById("input");
+	var programRunner = new Program(program.value+"", input.value+"");
+	var status = document.getElementById("status");
+	var programResult;
+	try {
+		programResult = programRunner.Main()[1];
+		output.innerText = programResult;
+		status.innerText = "done.";
+	}catch(e) {
+		programResult = "" + e;
+		status.innerText = programResult;
+	}
+	console.log("Output: " + programResult);
+	console.log("---------------");
+}
 
 var Program = function(_input, _args) {
 
-  //IMPORTANT GLOBAL VARS
-  this.stack = "";
-  this.code = _input;
-  this.args = _args;
-  this.input = [];
+	//IMPORTANT GLOBAL VARS
+	this.stack = "";
+	this.code = _input;
+	this.args = _args;
+	this.input = [];
 	//var this.that;
-  var that  = this;
+	var that  = this;
 
-  this.noCaretBuilding = true;
-  this.caretMode = true;
-  this.stackI = 0;
-  this.stackF = 0.0;
-  this.stackA = [];
-  this.stackMode = ""; //"" = String; I = int; F = float; A = array
-  this.operationMode = "";
+	this.noCaretBuilding = true;
+	this.caretMode = true;
+	this.stackI = 0;
+	this.stackF = 0.0;
+	this.stackA = [];
+	this.stackMode = ""; //"" = String; I = int; F = float; A = array
+	this.operationMode = "";
 
-  this.buildMode = "";
-  this.stringBuilder = "";
-  this.stringMode = "n"; //n is normal, e is escape
-  this.intBuilder = "";
-  this.floatBuilder = "";
-  this.regexBuilder = "";
-  this.regexMode = "n"; //n is normal, f is flag
-  this.evalBuilder = "";
+	this.buildMode = "";
+	this.stringBuilder = "";
+	this.stringMode = "n"; //n is normal, e is escape
+	this.intBuilder = "";
+	this.floatBuilder = "";
+	this.regexBuilder = "";
+	this.regexMode = "n"; //n is normal, f is flag
+	this.evalBuilder = "";
 
-  this.caretFuncMode = "n"; //n for normal, e for escape
+	this.caretFuncMode = "n"; //n for normal, e for escape
 
-  privateVars = "stack,code,args,input,noCaretBuilding,caretMode,stackI,stackF,stackA,stackMode,operationMode,buildMode,stringBuilder,stringMode,intBuilder,floatBuilder,regexBuilder,regexMode,evalBuilder,caretFuncMode".split(",");
+	privateVars = "stack,code,args,input,noCaretBuilding,caretMode,stackI,stackF,stackA,stackMode,operationMode,buildMode,stringBuilder,stringMode,intBuilder,floatBuilder,regexBuilder,regexMode,evalBuilder,caretFuncMode".split(",");
 
-  var stack,code,args,input,noCaretBuilding,caretMode,stackI,stackF,stackA,stackMode,operationMode,buildMode,stringBuilder,stringMode,intBuilder,floatBuilder,regexBuilder,regexMode,evalBuilder,caretFuncMode;
-//console.log("um"+that.stack);
-  privateToPublic = function() {
-    for(Var of privateVars) {
-      //console.log(that.stack);
+	var stack,code,args,input,noCaretBuilding,caretMode,stackI,stackF,stackA,stackMode,operationMode,buildMode,stringBuilder,stringMode,intBuilder,floatBuilder,regexBuilder,regexMode,evalBuilder,caretFuncMode;
+	//console.log("um"+that.stack);
+	privateToPublic = function() {
+		for(Var of privateVars) {
+			//console.log(that.stack);
 			//eval(`stack=this.stack+"a"`);
-      eval(`${Var} = that.${Var}`);
-    }
-  }
-  console.log(this.stack);
-  publicToPrivate = function() {
-    for(Var of this.privateVars) {
-      eval(`that.${Var} = ${Var}`);
-    }
-  }
-  privateToPublic();
-  //parsing the c^rrot datetype
-  caret = function(char) {
-    console.log(char);
-    if (caretFuncMode == "e") {
-      caretFuncMode = "n";
-      return char;
-    }
-    if (char === "^") return null;
-    if (char === "#") return input.join("\n");
-    if (char === "$") {
-      return input.shift(-1);
-    }
-    if (char === "\\") {
-      caretFuncMode = "e";
-      return "";
-    }
-    return char;
-  }
+			eval(`${Var} = that.${Var}`);
+		}
+	}
+	console.log(this.stack);
+	publicToPrivate = function() {
+		for(Var of this.privateVars) {
+			eval(`that.${Var} = ${Var}`);
+		}
+	}
+	privateToPublic();
+	//parsing the c^rrot datetype
+	caret = function(char) {
+		console.log(char);
+		if (caretFuncMode == "e") {
+			caretFuncMode = "n";
+			return char;
+		}
+		if (char === "^") return null;
+		if (char === "#") return input.join("\n");
+		if (char === "$") {
+			return input.shift(-1);
+		}
+		if (char === "\\") {
+			caretFuncMode = "e";
+			return "";
+		}
+		return char;
+	}
 
-  //applying monad operations
-  applyOperation = function(arg) {
-    //what to do for each op
-    switch (operationMode) {
-      //TODO: add support for other stack types
-      case "+":
-        if (buildMode === "string") {
-          if(stackMode === "A") {
-            stackMode = "";
-            stack = stackA.join(stringBuilder);
-          }else{
-            stackMode = "";
-            stack += stringBuilder;
-          }
-          stringBuilder = "";
-          buildMode="";
-        } else if (buildMode === "float") {
-          //v for converting int to float if necessary
-          if (stackMode === "I" && /\./.test(floatBuilder)) {
-            stackMode = "F";
-            stackF = stackI + 0.0;
-          }
-          if(stackMode === "A") {
-            for(var i=0; i<stackA.length; i++) {
-              stackA[i] = parseFloat(stackA[i]+"")+parseFloat(floatBuilder);
-            }
-          }else{
-            eval(`stack${stackMode} += parseFloat(${floatBuilder})`);
-          }
-          floatBuilder = "";
-          buildMode="";
-        } else if(arg === " ") {
-          if(stackMode === "A") {
-            stackMode = "F";
-            stackF = 0.0;
-            for(element of stackA) {
-              stackF += parseFloat(element+"");
-            }
-          }
-        }
-        break;
-      case "-":
-        if (buildMode === "string") {
-          stackMode = "";
-          stack = stack.split(stringBuilder).join("");
-          stringBuilder = "";
-          buildMode="";
-        } else if (buildMode === "float") {
-          //v for converting int to float if necessary
-          if (stackMode === "I" && /\./.test(floatBuilder)) {
-            stackMode = "F";
-            stackF = stackI + 0.0;
-          }
-          if(stackMode === "A") {
-            for(var i=0; i<stackA.length; i++) {
-              stackA[i] = parseFloat(stackA[i]+"")-parseFloat(floatBuilder);
-            }
-          }else{
-            if(stackMode === "") {
-              stack = stack.substring(parseInt(floatBuilder+""));
-            }else {
-              eval(`stack${stackMode} -= parseFloat(${floatBuilder})`);
-            }
-          }
-          floatBuilder = "";
-          buildMode="";
-        }
-        break;
-      case "*":
-        //TODO: add support for string stack type
-        if (buildMode === "string") {/*
-          stackMode = "";
-          stack = stack.split(stringBuilder).join("");
-          stringBuilder = "";*/
-          buildMode="";
-        } else if (buildMode === "float") {
-          //v for converting int to float if necessary
-          if (stackMode === "I" && /\./.test(floatBuilder)) {
-            stackMode = "F";
-            stackF = stackI + 0.0;
-          }
-          if(stackMode === "A") {
-            for(var i=0; i<stackA.length; i++) {
-              stackA[i] = parseFloat(stackA[i]+"")*parseFloat(floatBuilder);
-            }
-            break;
-          }else{
-            if(stackMode === "") {
-              //TODO: fractional number support
-              var originalStack = stack;
-              for(var i=0;i<parseInt(floatBuilder+"");i++) {
-                stack+=originalStack;
-              }
-            }else {
-              eval(`stack${stackMode} *= parseFloat(${floatBuilder})`);
-            }
-          }
-          floatBuilder = "";
-          buildMode="";
-        } else if(arg === " ") {
-          if(stackMode === "A") {
-            stackMode = "F";
-            stackF = 1.0;
-            for(element of stackA) {
-              stackF *= parseFloat(element+"");
-            }
-          }
-        }
-        break;
-      case "\/":
-        //TODO: add support for string stack type
-        if (buildMode === "regex") {
-          regexMode = "n";
-          stackMode = "A";
-          eval(`stackA=stack.match(${regexBuilder})`);
+	//applying monad operations
+	applyOperation = function(arg) {
+		//v for converting int to float if necessary (might need to be removed soon)
+		if (buildMode === "float" &&  stackMode === "I" && /\./.test(floatBuilder)) {
+			stackMode = "F";
+			stackF = stackI + 0.0;
+		}
+
+		//what to do for each op
+		switch (operationMode) {
+				//TODO: add support for other stack types
+			case "+":
+				if (buildMode === "string") {
+					if(stackMode === "A") {
+						stackMode = "";
+						stack = stackA.join(stringBuilder);
+					}else{
+						stackMode = "";
+						stack += stringBuilder;
+					}
+					stringBuilder = "";
+					buildMode="";
+				} else if (buildMode === "float") {
+					if(stackMode === "A") {
+						for(var i=0; i<stackA.length; i++) {
+							stackA[i] = parseFloat(stackA[i]+"")+parseFloat(floatBuilder);
+						}
+					}else{
+						eval(`stack${stackMode} += parseFloat(${floatBuilder})`);
+					}
+					floatBuilder = "";
+					buildMode="";
+				} else if(arg === " ") {
+					if(stackMode === "A") {
+						stackMode = "F";
+						stackF = 0.0;
+						for(element of stackA) {
+							stackF += parseFloat(element+"");
+						}
+					}
+				}
+				break;
+			case "-":
+				if (buildMode === "string") {
+					stackMode = "";
+					stack = stack.split(stringBuilder).join("");
+					stringBuilder = "";
+					buildMode="";
+				} else if (buildMode === "float") {
+					if(stackMode === "A") {
+						for(var i=0; i<stackA.length; i++) {
+							stackA[i] = parseFloat(stackA[i]+"")-parseFloat(floatBuilder);
+						}
+					}else{
+						if(stackMode === "") {
+							stack = stack.substring(parseInt(floatBuilder+""));
+						}else {
+							eval(`stack${stackMode} -= parseFloat(${floatBuilder})`);
+						}
+					}
+					floatBuilder = "";
+					buildMode="";
+				}
+				break;
+			case "*":
+				//TODO: add support for string stack type
+				if (buildMode === "string") {/*
+					stackMode = "";
+					stack = stack.split(stringBuilder).join("");
+					stringBuilder = "";*/
+					buildMode="";
+				} else if (buildMode === "float") {
+					if(stackMode === "A") {
+						for(var i=0; i<stackA.length; i++) {
+							stackA[i] = parseFloat(stackA[i]+"")*parseFloat(floatBuilder);
+						}
+						break;
+					}else{
+						if(stackMode === "") {
+							//TODO: fractional number support
+							var originalStack = stack;
+							for(var i=0;i<parseInt(floatBuilder+"");i++) {
+								stack+=originalStack;
+							}
+						}else {
+							eval(`stack${stackMode} *= parseFloat(${floatBuilder})`);
+						}
+					}
+					floatBuilder = "";
+					buildMode="";
+				} else if(arg === " ") {
+					if(stackMode === "A") {
+						stackMode = "F";
+						stackF = 1.0;
+						for(element of stackA) {
+							stackF *= parseFloat(element+"");
+						}
+					}
+				}
+				break;
+			case "\/":
+				//TODO: add support for string stack type
+				if (buildMode === "regex") {
+					regexMode = "n";
+					stackMode = "A";
+					eval(`stackA=stack.match(${regexBuilder})`);
 					if(stackA === null){
 						stackA = [];
 					}
-          regexBuilder = "";
-          buildMode="";
-        } else if (buildMode === "float") {
-          //v for converting int to float if necessary
-          if (stackMode === "I" && /\./.test(floatBuilder)) {
-            stackMode = "F";
-            stackF = stackI + 0.0;
-          }
-          if(stackMode === "A") {
-            for(var i=0; i<stackA.length; i++) {
-              stackA[i] = parseFloat(stackA[i]+"")/parseFloat(floatBuilder);
-            }
-            break;
-          }else{
-            if(stackMode === "") {
-              var spliceIndex=parseInt(floatBuilder+"");
-              stack=stack.slice(0,spliceIndex)+stack.slice(spliceIndex+1,stack.length);
-            }else {
-              eval(`stack${stackMode} /= parseFloat(${floatBuilder})`);
-            }
-          }
-          floatBuilder = "";
-          buildMode="";
-        }
-        break;
-      case "S":
-        if(buildMode === "string" || buildMode === "float") {
-          if(stackMode === "A") {
+					regexBuilder = "";
+					buildMode="";
+				} else if (buildMode === "float") {
+					if(stackMode === "A") {
+						for(var i=0; i<stackA.length; i++) {
+							stackA[i] = parseFloat(stackA[i]+"")/parseFloat(floatBuilder);
+						}
+						break;
+					}else{
+						if(stackMode === "") {
+							var spliceIndex=parseInt(floatBuilder+"");
+							stack=stack.slice(0,spliceIndex)+stack.slice(spliceIndex+1,stack.length);
+						}else {
+							eval(`stack${stackMode} /= parseFloat(${floatBuilder})`);
+						}
+					}
+					floatBuilder = "";
+					buildMode="";
+				}
+				break;
+			case "%":
+				if (buildMode === "string") {
+					/*
+					stackMode = "";
+					stack = stack.split(stringBuilder).join("");
+					stringBuilder = "";*/
+					buildMode="";
+				} else if (buildMode === "float") {
+					if(stackMode === "A") {
+						/*
+						for(var i=0; i<stackA.length; i++) {
+							stackA[i] = parseFloat(stackA[i]+"")-parseFloat(floatBuilder);
+						}*/
+					}else{
+						if(stackMode === "") {
+							//stack = stack.substring(parseInt(floatBuilder+""));
+						}else {
+							eval(`stack${stackMode} %= parseFloat(${floatBuilder})`);
+						}
+					}
+					floatBuilder = "";
+					buildMode="";
+				}
+				break;
+			case "S":
+				if(buildMode === "string" || buildMode === "float") {
+					if(stackMode === "A") {
 						if(buildMode === "float"){
-            	stack = stackA.join(floatBuilder+"");
+							stack = stackA.join(floatBuilder+"");
 							floatBuilder = "";
 						}else if(buildMode === "string"){
 							stack = stackA.join(stringBuilder+"");
 							stringBuilder = "";
 						}
-            stackMode = "";
-          }
-          buildMode = "";
-        }
-        break;
-    }
-    operationMode = "";
+						stackMode = "";
+					}
+					buildMode = "";
+				}
+				break;
+		}
+		operationMode = "";
 		document.getElementById("output").innerText=eval(`stack${stackMode}`);
-  }
+	}
 
-  //MAIN function
-  this.Main = function() {
+	//MAIN function
+	this.Main = function() {
 		document.getElementById("status").innerText="running...\n";
-    //code = _input;
-    input = args.split("\n");
-    for (var i = 0; i < code.length; i++) {
-      //note: in the builder, when I use continue; it means that I don't want to applyOperation since the building is incomplete. Otherwise, it could even be misinterpreted as an operator
-      var onChar = code[i]; //this is the char we are processing
-      if (caretMode) {
-        var caretResult = caret(onChar);
-        if (caretResult === null) caretMode = false;
-        else stack += caretResult;
-      } else {
-        //building the string
-        if (buildMode === "string") {
-          if(stringMode == "e") {
-            stringBuilder += onChar;
-            stringMode = "n";
-            continue;
-          }
-          switch (onChar) {
-            case "\"":
-              //stringBuilding = false;
-              //buildMode = "";
-              break;
-            case "\\":
-              stringMode = "e";
-              continue;
-            case "$":
-              stringBuilder += (input.shift(-1));
-              continue;
-            case "#":
-              stringBuilder += input.join("\n");
-              continue;
-            default:
-              stringBuilder += onChar;
-              console.log("stringBuilder=" + stringBuilder);
-              continue;
-          }
-        }
+		//code = _input;
+		input = args.split("\n");
+		for (var i = 0; i < code.length; i++) {
+			//note: in the builder, when I use continue; it means that I don't want to applyOperation since the building is incomplete. Otherwise, it could even be misinterpreted as an operator
+			var onChar = code[i]; //this is the char we are processing
+			if (caretMode) {
+				var caretResult = caret(onChar);
+				if (caretResult === null) caretMode = false;
+				else stack += caretResult;
+			} else {
+				//building the string
+				if (buildMode === "string") {
+					if(stringMode == "e") {
+						stringBuilder += onChar;
+						stringMode = "n";
+						continue;
+					}
+					switch (onChar) {
+						case "\"":
+							//stringBuilding = false;
+							//buildMode = "";
+							break;
+						case "\\":
+							stringMode = "e";
+							continue;
+						case "$":
+							stringBuilder += (input.shift(-1));
+							continue;
+						case "#":
+							stringBuilder += input.join("\n");
+							continue;
+						default:
+							stringBuilder += onChar;
+							console.log("stringBuilder=" + stringBuilder);
+							continue;
+					}
+				}
 
-        //for stringbuilding
-        if (onChar == "\"" && stringBuilder == "" && buildMode === "") {
-          //stringBuilding = true;
-          buildMode="string";
-          continue;
-        }
-        
-        //float arg using "$"
-        if(operationMode !== "" && buildMode === "" && /[$#]/.test(onChar)) {
-          if(stackMode === "F" && onChar === "$") {
-            floatBuilder = parseFloat(input.shift(-1)+"");
+				//for stringbuilding
+				if (onChar == "\"" && stringBuilder == "" && buildMode === "") {
+					//stringBuilding = true;
+					buildMode="string";
+					continue;
+				}
+
+				//float arg using "$"
+				if(operationMode !== "" && buildMode === "" && /[$#]/.test(onChar)) {
+					if(stackMode === "F" && onChar === "$") {
+						floatBuilder = parseFloat(input.shift(-1)+"");
 						buildMode = "float";
-            applyOperation();
-          }else if(stackMode === "") {
-            stringBuilder = onChar==="$"?input.shift(-1):input.join("\n");
-          }
-        }
-        
-        //floatbuilding
-        if (buildMode === "float") {
-          if (/[0-9\.]/.test(onChar)) {
-            floatBuilder += onChar;
-            console.log("floatBuilder=" + floatBuilder);
-            if (i === code.length - 1) {
-              //floatBuilding = false;
-              //buildMode = "";
-            } else {
-              continue;
-            }
-          } else {
-            //floatBuilding = false;
-            //buildMode = "";
-            applyOperation();
-          }
-        }
-        //floatbuilding
-        if (/[0-9\.\-]/.test(onChar) && floatBuilder === "" && operationMode !== "" && buildMode === "") {
-          //floatBuilding = true;
-          buildMode="float";
-          floatBuilder += onChar;
-          console.log("floatBuilder=" + floatBuilder);
-          if (i !== code.length - 1) continue;
-        }
-        
-        //regexBuilding
-        if (buildMode === "regex") {
-          if (regexMode === "n") {
+						applyOperation();
+					}else if(stackMode === "") {
+						stringBuilder = onChar==="$"?input.shift(-1):input.join("\n");
+					}
+				}
+
+				//floatbuilding
+				if (buildMode === "float") {
+					if (/[0-9\.]/.test(onChar)) {
+						floatBuilder += onChar;
+						console.log("floatBuilder=" + floatBuilder);
+						if (i === code.length - 1) {
+							//floatBuilding = false;
+							//buildMode = "";
+						} else {
+							continue;
+						}
+					} else {
+						//floatBuilding = false;
+						//buildMode = "";
+						applyOperation();
+					}
+				}
+				//floatbuilding
+				if (/[0-9\.\-]/.test(onChar) && floatBuilder === "" && operationMode !== "" && buildMode === "") {
+					//floatBuilding = true;
+					buildMode="float";
+					floatBuilder += onChar;
+					console.log("floatBuilder=" + floatBuilder);
+					if (i !== code.length - 1) continue;
+				}
+
+				//regexBuilding
+				if (buildMode === "regex") {
+					if (regexMode === "n") {
 						if(onChar === "#"){
 							regexBuilder += input.shift(-1);
 						}else{
-            	regexBuilder += onChar;
+							regexBuilder += onChar;
 						}
-            console.log("regexBuilder=" + regexBuilder);
-            
-            //start /flags?/                escaped slash
-            if(onChar === "\/" && code[i-1] !== "\\") {
-              if(i !== code.length - 1) {
-                regexMode = "f";
-                continue;
-              }else{
-                applyOperation();
-              }  
-            }else {
-              continue;
-            }
-          }else if(regexMode === "f") {
-            //if it is a flag, append it to the regexBuilder
-            if(/[gmif]/.test(onChar)) {
-              regexBuilder += onChar;
-              if(i === code.length-1) {
-                console.log("regexBuilder=" + regexBuilder);
-                applyOperation();
-              }else{
-                continue;
-              }
-            }else{
-              //regexBuilding = false;
-              //buildMode = "";
-              console.log("regexBuilder=" + regexBuilder);
-              applyOperation();
-            }
-          }
-        }
-        
-        //regexBuilding
-        if (onChar === "\/" && regexBuilder === "" && operationMode !== "" && buildMode === "") {
-          //regexBuilding = true;
-          buildMode="regex";
-          regexBuilder += onChar;
-          regexMode = "n";
-          continue;
-        }
-        
-        //evalBuilding
-        /*
-        if(buildMode === "eval") {
-          if(onChar === ")") {
-            //escaping `)`
-            if(code[i] === "\\") {
-              evalBuilder.replace(/.$/g,")");
-            }else{
-              //eval ends
-              buildMode = "";
-              var evaluatedExpression = Main(evalBuilder,input.join`\n`);
-              eval(`${evaluatedExpression[0]}Builder="${evaluatedExpression[1]}"`);
-            }
-          }else{
-            evalBuilder += onChar;
-          }
-        }
-        
-        //eval building
-        if (onChar === "(" && evalBuilder === "" && operationMode !== "" && buildMode === "") {
-          buildMode = "eval";
-          //stringBuilder = "hi";
-          console.log("toEval");
-        }*/
+						console.log("regexBuilder=" + regexBuilder);
 
-        //normal operations
-        if (operationMode == "") {
-          switch (onChar) {
-            case '^':
-              caretMode = true;
-              break;
-            case 'I':
-              //v for handling case of empty stack
-              eval(`stackI = parseFloat((stack${stackMode}+"").length>0?stack${stackMode}+"":"0")`);
-              stackMode = "I";
-              break;
-            case 'F':
-              eval(`stackF = parseFloat((stack${stackMode}+"").length>0?stack${stackMode}+"":"0")`);
-              stackMode = "F";
-              break;
-            case 'S':
-              if(stackMode === "A") {
-              //S accepts an argument that tells it what comes in join(what)
-                operationMode = "S";
-              }else{
-                eval(`stack = stack${stackMode}+""`);
-                stackMode = "";
-              }
-              break;
-            case 'A':
-              //monad it takes the next char as arg
-              eval(`stackA = (stack${stackMode}+"").split(\`${code[i+1]+""}\`)`);
-              stackMode = "A";
-              i++;
-              break;
-            default:
-              operationMode = onChar;
-          }
-          continue;
-        } else {
-          console.log(operationMode);
-          applyOperation(onChar);
-          continue;
-        }
-      }
-    }
+						//start /flags?/                escaped slash
+						if(onChar === "\/" && code[i-1] !== "\\") {
+							if(i !== code.length - 1) {
+								regexMode = "f";
+								continue;
+							}else{
+								applyOperation();
+							}  
+						}else {
+							continue;
+						}
+					}else if(regexMode === "f") {
+						//if it is a flag, append it to the regexBuilder
+						if(/[gmif]/.test(onChar)) {
+							regexBuilder += onChar;
+							if(i === code.length-1) {
+								console.log("regexBuilder=" + regexBuilder);
+								applyOperation();
+							}else{
+								continue;
+							}
+						}else{
+							//regexBuilding = false;
+							//buildMode = "";
+							console.log("regexBuilder=" + regexBuilder);
+							applyOperation();
+						}
+					}
+				}
 
-    var returnValue = eval(`stack${stackMode}`);
-    return [stackMode, returnValue];
-  }
+				//regexBuilding
+				if (onChar === "\/" && regexBuilder === "" && operationMode !== "" && buildMode === "") {
+					//regexBuilding = true;
+					buildMode="regex";
+					regexBuilder += onChar;
+					regexMode = "n";
+					continue;
+				}
+
+				//evalBuilding
+				/*
+				if(buildMode === "eval") {
+					if(onChar === ")") {
+				//escaping `)`
+						if(code[i] === "\\") {
+							evalBuilder.replace(/.$/g,")");
+						}else{
+				//eval ends
+							buildMode = "";
+							var evaluatedExpression = Main(evalBuilder,input.join`\n`);
+							eval(`${evaluatedExpression[0]}Builder="${evaluatedExpression[1]}"`);
+						}
+					}else{
+						evalBuilder += onChar;
+					}
+				}
+
+				//eval building
+				if (onChar === "(" && evalBuilder === "" && operationMode !== "" && buildMode === "") {
+					buildMode = "eval";
+				//stringBuilder = "hi";
+					console.log("toEval");
+				}*/
+
+				//normal operations
+				if (operationMode == "") {
+					switch (onChar) {
+						case '^':
+							caretMode = true;
+							break;
+						case 'I':
+							//v for handling case of empty stack
+							eval(`stackI = parseFloat((stack${stackMode}+"").length>0?stack${stackMode}+"":"0")`);
+							stackMode = "I";
+							break;
+						case 'F':
+							eval(`stackF = parseFloat((stack${stackMode}+"").length>0?stack${stackMode}+"":"0")`);
+							stackMode = "F";
+							break;
+						case 'S':
+							if(stackMode === "A") {
+								//S accepts an argument that tells it what comes in join(what)
+								operationMode = "S";
+							}else{
+								eval(`stack = stack${stackMode}+""`);
+								stackMode = "";
+							}
+							break;
+						case 'A':
+							//monad it takes the next char as arg
+							eval(`stackA = (stack${stackMode}+"").split(\`${code[i+1]+""}\`)`);
+							stackMode = "A";
+							i++;
+							break;
+						default:
+							operationMode = onChar;
+					}
+					continue;
+				} else {
+					console.log(operationMode);
+					applyOperation(onChar);
+					continue;
+				}
+			}
+		}
+
+		var returnValue = eval(`stack${stackMode}`);
+		return [stackMode, returnValue];
+	}
 }
 /**
  * TODO:
