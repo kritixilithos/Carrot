@@ -5,6 +5,26 @@ window.onload = function() {
 	console.log("Started");
 	var b = document.getElementById("b");
 	//button
+	//function called when Execute Program button is clicked
+	b.onclick = function() {
+		var program = document.getElementById("program");
+		var output = document.getElementById("output");
+		output.innerText = ""; //clearing output
+		var input = document.getElementById("input");
+		var programRunner = new Program(program.value+"", input.value+"");
+		var status = document.getElementById("status");
+		var programResult;
+		try {
+			programResult = programRunner.Main()[1];
+			output.innerText = programResult;
+			status.innerText = "done.";
+		}catch(e) {
+			programResult = "" + e;
+			status.innerText = programResult;
+		}
+		console.log("Output: " + programResult);
+		console.log("---------------");
+	}
 
 	var program = document.getElementById("program");
 	var input = document.getElementById("input");
@@ -16,26 +36,6 @@ window.onload = function() {
 };
 
 
-//function called when Execute Program button is clicked
-b.onclick = function() {
-	var program = document.getElementById("program");
-	var output = document.getElementById("output");
-	output.innerText = ""; //clearing output
-	var input = document.getElementById("input");
-	var programRunner = new Program(program.value+"", input.value+"");
-	var status = document.getElementById("status");
-	var programResult;
-	try {
-		programResult = programRunner.Main()[1];
-		output.innerText = programResult;
-		status.innerText = "done.";
-	}catch(e) {
-		programResult = "" + e;
-		status.innerText = programResult;
-	}
-	console.log("Output: " + programResult);
-	console.log("---------------");
-}
 
 var Program = function(_input, _args) {
 
