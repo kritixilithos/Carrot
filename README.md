@@ -6,6 +6,10 @@ I am writing up an entirely new interpreter for Carrot. This new one is very muc
 
 ##Recent Changes
 
+14 April 2017,
+
+ - Fixed bug with leading whitespace (but not trailing whitespace)
+
 3 March 2017,
 
  - Added the `%` modulo operator for floatArg in floatMode
