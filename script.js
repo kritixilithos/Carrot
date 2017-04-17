@@ -49,6 +49,8 @@ var Program = function(_input, _args) {
 
 	this.noCaretBuilding = true;
 	this.caretMode = true;
+	this.upCaret = true;
+	this.caretBuilder = "";
 	this.stackI = 0;
 	this.stackF = 0.0;
 	this.stackA = [];
@@ -66,9 +68,9 @@ var Program = function(_input, _args) {
 
 	this.caretFuncMode = "n"; //n for normal, e for escape
 
-	privateVars = "stack,code,args,input,noCaretBuilding,caretMode,stackI,stackF,stackA,stackMode,operationMode,buildMode,stringBuilder,stringMode,intBuilder,floatBuilder,regexBuilder,regexMode,evalBuilder,caretFuncMode".split(",");
+	privateVars = "stack,code,args,input,noCaretBuilding,caretMode,upCaret,caretBuilder,stackI,stackF,stackA,stackMode,operationMode,buildMode,stringBuilder,stringMode,intBuilder,floatBuilder,regexBuilder,regexMode,evalBuilder,caretFuncMode".split(",");
 
-	var stack,code,args,input,noCaretBuilding,caretMode,stackI,stackF,stackA,stackMode,operationMode,buildMode,stringBuilder,stringMode,intBuilder,floatBuilder,regexBuilder,regexMode,evalBuilder,caretFuncMode;
+	var stack,code,args,input,noCaretBuilding,caretMode,upCaret,caretBuilder,stackI,stackF,stackA,stackMode,operationMode,buildMode,stringBuilder,stringMode,intBuilder,floatBuilder,regexBuilder,regexMode,evalBuilder,caretFuncMode;
 	//console.log("um"+that.stack);
 	privateToPublic = function() {
 		for(Var of privateVars) {
@@ -286,8 +288,18 @@ var Program = function(_input, _args) {
 			var onChar = code[i]; //this is the char we are processing
 			if (caretMode) {
 				var caretResult = caret(onChar);
-				if (caretResult === null) caretMode = false;
-				else stack += caretResult;
+				if (caretResult !== null) {
+					caretBuilder += caretResult;
+				}
+				if (caretResult === null || i === code.length-1) {
+					if (upCaret) {
+						stack = stack + caretBuilder;
+					} else {
+						stack = caretBuilder + stack;
+					}
+					caretBuilder = "";
+					caretMode = false;
+				}
 			} else {
 				//building the string
 				if (buildMode === "string") {
@@ -440,6 +452,11 @@ var Program = function(_input, _args) {
 					switch (onChar) {
 						case '^':
 							caretMode = true;
+							upCaret = true;
+							break;
+						case 'v':
+							caretMode = true;
+							upCaret = false;
 							break;
 						case 'I':
 							//v for handling case of empty stack
