@@ -11,7 +11,7 @@ let Interpreter = require("./interpreter.js");
 let Parser = require("./parser/parser.js");
 
 let args = process.argv;
-let usage = `Usage: node carrot.js [-d] <file> <input>
+let usage = `Usage: node carrot.js [-d] <file> [input]
 
    -d, --debug
                output AST and tokenisation`;
@@ -21,7 +21,7 @@ let input;
 
 var debugFlag = false;
 
-if (args.length < 4) {
+if (args.length < 3) {
 	console.log(usage);
 } else {
 	// remove first two arguments
@@ -37,7 +37,8 @@ if (args.length < 4) {
 
 	// reading program and input files
 	code = fs.readFileSync(currArg).toString();
-	input = fs.readFileSync(args.shift()).toString();
+	// optional input
+	input = args.length?fs.readFileSync(args.shift()).toString():"";
 
 	debugFlag = flags.includes("-d") || flags.includes("--debug");
 
