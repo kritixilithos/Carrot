@@ -91,7 +91,7 @@ Non-operators
 
 These are functions that do not affect the content of the stack.
 
-TODO for other arguments
+TODO for other arguments and lowercase counterparts
 
 Lowercase variants switches stack to the respective stack-mode without writing anything to the stack.
 
@@ -104,12 +104,26 @@ array-mode : switch stack to string-mode
              string: join elements of stack with arg set that value to stack-string
              float : join elements of stack with arg set that value to stack-string
 
+s: switch to string-mode without changing the stack
+string-mode: switch to string-mode; TODO because redundant
+float-mode : switch to string-mode
+             none  : switch to string-mode
+array-mode : switch to string-mode
+             none  : switch to string-mode
+
 F: switch stack to float-mode
 string-mode: switch stack to float-mode
              none  : set stack-float to parseFloat(stack)
 float-mode : switch stack to float-mode; TODO because redundant
 array-mode : switch stack to float-mode; TODO
              none  : set stack-float to parseFloat(stack.join(""))
+
+f: switch to float-mode without changing the stack
+string-mode: switch to float-mode
+             none  : switch to float-mode
+float-mode : switch to float-mode; TODO because redundant
+array-mode : switch to float-mode
+             none  : switch to float-mode
 
 A: switch stack to array-mode
 string-mode: switch stack to array-mode
@@ -118,6 +132,13 @@ string-mode: switch stack to array-mode
 float-mode : switch stack to array-mode
              none  : set stack-array to [stack] or push(stack); TODO
 array-mode : switch stack to array-mode; TODO because redundant
+
+a: switch to array-mode without changing the stack
+string-mode: switch to array-mode
+             none  : switch to array-mode
+float-mode : switch to array-mode
+             none  : switch to float-mode
+array-mode : switch to array-mode; TODO because redundant
 
 Operators
 ---------

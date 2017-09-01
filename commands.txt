@@ -1,0 +1,121 @@
+^ (caret) toggles caret-mode
+string-mode: appends the caret-data to the string
+float-mode : TODO
+array-mode : TODO
+
+v (down-caret) toggles caret-mode
+string-mode: prepends the caret-data to the string
+float-mode : TODO
+array-mode : TODO
+
+S: switch stack to string-mode
+string-mode: switch stack to string-mode; TODO because redundant
+float-mode : switch stack to string-mode
+             none  : set stack-string to stack+""
+array-mode : switch stack to string-mode
+             none  : join elements of stack with "" set that value to stack-string
+             string: join elements of stack with arg set that value to stack-string
+             float : join elements of stack with arg set that value to stack-string
+
+s: switch to string-mode without changing the stack
+string-mode: switch to string-mode; TODO because redundant
+float-mode : switch to string-mode
+             none  : switch to string-mode
+array-mode : switch to string-mode
+             none  : switch to string-mode
+
+F: switch stack to float-mode
+string-mode: switch stack to float-mode
+             none  : set stack-float to parseFloat(stack)
+float-mode : switch stack to float-mode; TODO because redundant
+array-mode : switch stack to float-mode; TODO
+             none  : set stack-float to parseFloat(stack.join(""))
+
+f: switch to float-mode without changing the stack
+string-mode: switch to float-mode
+             none  : switch to float-mode
+float-mode : switch to float-mode; TODO because redundant
+array-mode : switch to float-mode
+             none  : switch to float-mode
+
+A: switch stack to array-mode
+string-mode: switch stack to array-mode
+             none  : set stack-array to [stack] or push(stack); TODO
+             string: split stack by arg and set the result to stack-array
+float-mode : switch stack to array-mode
+             none  : set stack-array to [stack] or push(stack); TODO
+array-mode : switch stack to array-mode; TODO because redundant
+
+a: switch to array-mode without changing the stack
+string-mode: switch to array-mode
+             none  : switch to array-mode
+float-mode : switch to array-mode
+             none  : switch to float-mode
+array-mode : switch to array-mode; TODO because redundant
+
++ plus
+string-mode: concatenate
+             none  : TODO
+             string: concatenate arg to stack
+             float : concatenate arg (as a string) to stack
+             array : TODO
+             regex : TODO
+float-mode : add
+             none  : TODO
+             string: add arg to stack
+             float : add parseFloat(arg) to stack
+             array : TODO
+             regex : TODO
+array-mode : ~push arg/~perform + on last element of array; TODO
+             none  : sum of floats; TODO if non-floats exist
+
+- minus
+string-mode: remove
+             none  : TODO
+             string: remove all instances of arg from stack
+             float : remove the first (or last if arg is negative) arg characters from stack
+             array : TODO
+             regex : TODO
+float-mode : subtract
+             none  : negate stack
+             string: TODO
+             float : subtract arg from stack
+             regex : TODO
+array-mode : ~pop/~perform - on last element of array; TODO
+
+* asterisk
+string-mode: duplicate
+             none  : TODO
+             string: interleave stack with arg; TODO
+             float : string duplicate; "asd"*n="asd".repeat(n+1) /*or just .repeat(n) for either 1) all values of n 2) fractional values of n*/; fractional floats also supported
+             array : TODO
+             regex : TODO
+float-mode:  multiply
+             none  : return the sign on the stack; 1, 0, -1 for positive, zero, negative
+             string: TODO
+             float : multiply arg with stack
+             array : TODO
+             regex : TODO
+array-mode:  perform * on last element of array?; TODO
+             none  : product of floats; TODO if non-floats exist
+
+/ forward slash
+string-mode: remove/regex magic
+             none  : TODO
+             string: TODO
+             float : remove character at argth index from stack
+             array : TODO
+             regex : set the stack-array to be equal to the matches of arg on stack
+             r+s   : substitution; replace matches of arg1 on stack with arg2
+float-mode : divide
+             none  : return the fractional part of the stack
+             string: TODO
+             float : divide stack by arg
+             array : TODO
+             regex : TODO
+array-mode : perform / on last element of array?; TODO
+
+h move one cell left
+j move one cell down
+k move one cell up
+l move one cell right

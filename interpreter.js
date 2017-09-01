@@ -8,33 +8,11 @@ let StackMode = require("./stackMode.js");
 let TokenType = require("./parser/tokenType.js");
 
 /*
- * -T-O-D-O-: combine parseArray() and parseLiteral() in the same function simply for ease
- * TODO: parseFloat(".") borks
+ * T-O-D-O: combine parseArray() and parseLiteral() in the same function simply for ease
+ * T-O-D-O: parseFloat(".") borks
  * */
 
 module.exports = class Interpreter {
-	/*
-	constructor(code, input) {
-		this.code = code;
-		this.input = input;
-
-		// initialise 2D sheet
-		this.garden = new Garden();
-
-		// initialise AST
-		this.parser = new Parser(this.code);
-		this.AST = this.parser.parse();
-		this.ASTindex = []; // FIXME: discard this var
-
-		// initialise input
-		this.inputParser = new Parser(this.input, true);
-		this.input = this.inputParser.parse();
-		this.inputIndex = 1;
-
-		// to avoid operator clutter in the constructor
-		this.initOperators();
-	}*/
-
 	// 1-indexed XXX: remember that inputIndex === 1
 	constructor(_AST, _input, _inputIndex = 1, _garden = null) {
 		// initialise AST
@@ -88,7 +66,7 @@ module.exports = class Interpreter {
 					caretData += child.getToken().data;
 				}
 			} else {
-				// TODO: subshells
+				// XXX: subshells, but lexer doesn't alow that, feature-request or not?
 			}
 		}
 
@@ -125,10 +103,8 @@ module.exports = class Interpreter {
 				functionName += res[1];
 				functionArgs.push(res[0]);
 			} else if(c.getName() === NodeType.SUBSHELL) {
-				// TODO (subshells, and maybe more)
 				//console.log(this.AST.children[1]);
 				var res = this.interpretSubshell(c);
-				//console.log(this.stack().getStack()); TODO: borky
 				functionName += res[1];
 				functionArgs.push(res[0]);
 			}
