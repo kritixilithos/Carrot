@@ -24,7 +24,7 @@ let Subshell = require("./subshell.js");
  * */
 
 module.exports = class Parser {
-	constructor(code, parseInput=false, debug) {
+	constructor(code, parseInput=false, debug=false) {
 		// are we parsing the input?
 		this.parseInput = parseInput;
 

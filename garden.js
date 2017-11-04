@@ -5,11 +5,11 @@ let Stack = require("./stack.js");
 // the Garden, aka the sheet (2D tape, a tape of tapes)
 // enter the zen
 module.exports = class Garden {
-	constructor(_sheet) {
+	constructor(_sheet, _pos) {
 		// remember, 2D array
 		this.sheet = _sheet || [[new Stack()]];
 		// PVector
-		this.pos = {
+		this.pos = _pos || {
 			x: 0,
 			y: 0
 		};
@@ -28,7 +28,13 @@ module.exports = class Garden {
 			}
 			arr.push(temp);
 		}
-		return new Garden(arr);
+
+		// copy the pos
+		var pos = {x:0, y:0};
+		pos.x = this.pos.x;
+		pos.y = this.pos.y;
+
+		return new Garden(arr, pos);
 	}
 
 	// returns object

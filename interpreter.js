@@ -70,6 +70,7 @@ module.exports = class Interpreter {
 			}
 		}
 
+		//console.log(caretType, Pascalify(this.stackMode()), caretData);
 		this.operators[caretType][Pascalify(this.stackMode()) + "Caret"](caretData);
 	}
 
@@ -116,8 +117,10 @@ module.exports = class Interpreter {
 
 		// call the operator function
 		try {
+			//console.log(opNode.getToken().data, functionName, functionArgs);
 			this.operators[opNode.getToken().data][functionName](functionArgs);
 		} catch(e) {
+			console.log(e);
 			throw new Error("FunctionNotImplemented");
 		}
 	}
@@ -141,7 +144,8 @@ module.exports = class Interpreter {
 		var _input = this.input;
 		var _inputIndex = this.inputIndex;
 		var _garden = this.garden.clone();
-		_garden.getCurrStack().clearAll(); // TODO: borky, object pointer the same
+		_garden.getCurrStack().clearAll(); // TODO: borky, object pointer the same; fixed?
+		// T-O-D-O: make it start at the same position
 		var res = new Interpreter(_AST, _input, _inputIndex, _garden).run();
 		//console.log(res.run());
 		return [res, typeOf(res)];
@@ -184,9 +188,7 @@ module.exports = class Interpreter {
 				// parse standard literal
 				if(type === TokenType.FLOAT) {
 					// parse as float
-					// cases where the float is just a '.'
-					if(data === ".") return [0.0, "Float"];
-					return [parseFloat(data), "Float"];
+					return [this.parseFloat(data), "Float"];
 				} else if(type === TokenType.STRING) {
 					// remove quotes
 					return [data.slice(1, data.length-1), "String"];
@@ -199,6 +201,12 @@ module.exports = class Interpreter {
 				}
 			}
 		}
+	}
+
+	// parse a float
+	parseFloat(data) {
+		// cases where the float is just a '.'
+		return data==="."||!data?0.0:parseFloat(data);
 	}
 
 	// get the current input
@@ -256,7 +264,9 @@ module.exports = class Interpreter {
 			// (up/down)careting, basically caret-mode stuff
 			// param: arg1 (a string)
 			'^': {
-				StringCaret(arg1) {c.stack().setString(c.stack().getString() + arg1);}
+				StringCaret(arg1) {c.stack().setString(c.stack().getString() + arg1);},
+
+				FloatCaret(arg1) {c.stack().setFloat(c.stack().getFloat() + parseFloat(arg1));}
 			},
 
 			'v': {
@@ -403,7 +413,7 @@ module.exports = class Interpreter {
 			'F': {
 				StringNil() {
 					c.stack().setStackMode(StackMode.FLOAT);
-					c.stack().setFloat(parseFloat(c.stack().getString()));
+					c.stack().setFloat(c.parseFloat(c.stack().getString()));
 				},
 
 				FloatNil() {

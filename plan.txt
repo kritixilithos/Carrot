@@ -230,9 +230,7 @@ array-mode : perform / on last element of array?; TODO
 Sub-processes
 -------------
 
-() are sub-processes. Whatever is inside the parentheses is evaluated as a ---full separate Carrot program---[1] and the result is an argument.
-
-[1]: this might be changed slightly. Instead of a full separate program, it might just be a separate program but in the SAME sheet, or maybe the current Stack cell will be emptied.
+() are sub-processes. Whatever is inside the parentheses is evaluated as another Carrot program, but with the same garden and stackmodes and position in the garden (yet the current cell in the garden will be emptied) and the result of this program can act as an argument to a command.
 
 Loops
 -----
@@ -250,34 +248,3 @@ h: move one cell left
 j: move one cell down
 k: move one cell up
 l: move one cell right
-
-
-Scratchpad
-
-|---------|----------------------------------------------------------------|
-| Title   | Description                                                    |
-|---------|----------------------------------------------------------------|
-| cmd     | blah blah blah                                                 |
-|         |                                                                |
-|         |                                                                |
-|---------|----------------------------------------------------------------|
-
- Command | Description
----------|-------------
- cmd     | large description that will fill your screen
-
-|========|=================================================================|
-| Title  | Description                                                     |
-|========|=================================================================|
-| string | a string                                                        |
-|--------|-----------------------------------------------------------------|
-| float  | a float, the only numeric data type                             |
-|--------|-----------------------------------------------------------------|
-| array  | an array that can contain mixed types                           |
-|--------|-----------------------------------------------------------------|
-| regex  | a regular expression                                            |
-|--------|-----------------------------------------------------------------|
-| sub.   | (substitution) a regular expression followed by a substitution  |
-|--------|-----------------------------------------------------------------|
-|        | bleck                                                           |
-|--------|-----------------------------------------------------------------|

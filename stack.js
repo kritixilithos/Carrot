@@ -24,6 +24,7 @@ module.exports = class Stack {
 		_stack.setString(this.getString());
 		_stack.setFloat(this.getFloat());
 		_stack.setArray(this.getArray());
+		_stack.setStackMode(this.getStackMode());
 		return _stack;
 	}
 
