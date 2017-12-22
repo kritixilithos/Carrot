@@ -121,7 +121,7 @@ module.exports = class Interpreter {
 			this.operators[opNode.getToken().data][functionName](functionArgs);
 		} catch(e) {
 			console.log(e);
-			throw new Error("FunctionNotImplemented");
+			throw new Error(`FunctionNotImplemented: functionName = $functionName; functionArgs = $functionArgs`);
 		}
 	}
 
@@ -302,8 +302,8 @@ module.exports = class Interpreter {
 					c.stack().setString(c.stack().getString().split(args[0]).join(""));
 				},
 				StringFloat(args) {
-					c.stack().setString(args[0]>=0?c.stack.getString().slice(args[0])
-					:c.stack.getString().slice(0, args[0]));
+					c.stack().setString(args[0]>=0?c.stack().getString().slice(args[0])
+					:c.stack().getString().slice(0, args[0]));
 				},
 
 				FloatNil(args) {
@@ -366,6 +366,18 @@ module.exports = class Interpreter {
 				},
 				FloatFloat(args) {
 					c.stack().setFloat(c.stack().getFloat() / args[0]);
+				}
+			},
+
+			// PERCENT
+			'%': {
+				StringFloat(args) {
+					var str = c.stack().getString();
+					c.stack().setString(args[0]>0?str.slice(0,args[0]):str.slice(args[0]));
+				},
+
+				FloatFloat(args) {
+					c.stack().setFloat(c.stack().getFloat() % args[0]);
 				}
 			},
 

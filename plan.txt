@@ -227,6 +227,21 @@ float-mode : divide
              regex : TODO
 array-mode : perform / on last element of array?; TODO
 
+% forward slash
+string-mode: remove
+             none  : TODO
+             string: TODO
+             float : remove all but the first (or last if arg is negative) arg characters from the string (opposite of -)
+             array : TODO
+             regex : TODO
+float-mode : divide
+             none  : TODO
+             string: TODO
+             float : return stack % arg
+             array : TODO
+             regex : TODO
+array-mode : perform / on last element of array?; TODO
+
 Sub-processes
 -------------
 

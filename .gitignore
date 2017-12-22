@@ -1,5 +1,4 @@
-.DS_Store
-*.swp
 npm-debug.log
 test*.carrot
+golf*.carrot
 input*.txt

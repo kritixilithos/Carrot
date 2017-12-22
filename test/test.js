@@ -13,6 +13,9 @@ var tests = [
 	},{
 		code: "5^+\"a0d\"+3/'/\\d/g'",
 		res: ["5","0","3"]
+	},{
+		code: "9^F%4S+1234%2",
+		res: "11"
 	}
 ];
 
@@ -26,6 +29,7 @@ for(var test of tests) {
 	if(equal(res, test.res)) {
 		correct++;
 	} else {
+		console.log(`Running \`${test.code}\` with input \`${test.input||""}\` gives \`${res}\` instead of \`${test.res}\``);
 		incorrect.push(total);
 	}
 
