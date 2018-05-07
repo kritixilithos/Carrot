@@ -4,7 +4,8 @@ Carrot is an esoteric string-based programming language made for code-golfing. I
 
 ## Usage
 
-    node carrot.js [-d] <file> [input]
+    carrot [-d] -f <file> [input]
+    carrot [-d] <code> [input]
 
 ## Run tests
 

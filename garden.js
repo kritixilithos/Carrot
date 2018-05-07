@@ -82,7 +82,7 @@ module.exports = class Garden {
 			this.pos.x--;
 		} else {
 			// grid small, so generate column to left
-			this.sheet.map(a=>[new Stack()].concat(a));
+			this.sheet = this.sheet.map(a=>[new Stack(),...a]);
 		}
 		if(--n) {
 			this.moveLeft(n);
