@@ -11,6 +11,7 @@ let TokenType = require("./parser/tokenType.js");
  * T-O-D-O: combine parseArray() and parseLiteral() in the same function simply for ease
  * T-O-D-O: parseFloat(".") borks
  * TODO: use underscore for negative literals... ($^F-1) borks but ($^F- 1) doesn't :|
+ * T?O?D?O?: yank paste registers?
  * */
 
 module.exports = class Interpreter {
